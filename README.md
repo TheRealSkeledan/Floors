@@ -35,6 +35,17 @@ render()
 * Renders graphics
 
 ### GameObject.java
+GameObject()
+* Sets the x, y, and ID to the parameters
+
+tick()
+* Abstract class
+* Used to set the tick speed
+
+render()
+* Abstract class
+* Used to render the object
+
 
 ### Handler.java
 
