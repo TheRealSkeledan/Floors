@@ -39,20 +39,28 @@ GameObject()
 * Sets the x, y, and ID to the parameters
 
 tick()
-* Abstract class
+* Abstract method
 * Used to set the tick speed
 
 render()
-* Abstract class
+* Abstract method
 * Used to render the object
 
-
 ### Handler.java
+tick()
+* Gets all of the objects in the game and calls the tick method of said object
+
+render()
+* Gets and renders all of the objects into the game
+
+addObject()
+* Adds an object into the game
+
+removeObject()
+* Removes an object from the game
 
 ### ID.java
+* Stores the IDs of objects
 
 ### Window.java
-
-### Player.java
-
-### Window.java
+* Creates the JFrame Window where the game is going to be played.
