@@ -60,6 +60,7 @@ removeObject()
 * Removes an object from the game
 
 ### ID.java
+* It is an Enum
 * Stores the IDs of objects
 
 ### Window.java
