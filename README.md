@@ -11,6 +11,7 @@ A game based off Roblox: Doors, created in Java Swing
 ## Documentation
 ### Game.java
 Game()
+* Constructor
 * Creates a new Windows 
 * Creates a new Handler class
 * Adds the Player object
@@ -36,6 +37,7 @@ render()
 
 ### GameObject.java
 GameObject()
+* Constructor
 * Sets the x, y, and ID to the parameters
 
 tick()
