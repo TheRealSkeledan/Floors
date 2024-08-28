@@ -21,7 +21,7 @@ start()
 * Starts the thread and sets running to true
 
 stop()
-* Continues to try and joins the thread, and sets running to false
+* Continues to try and join the thread, and sets running to false
 * If an error occurs, it prints out the error
 
 run()
@@ -32,7 +32,7 @@ tick()
 
 render()
 * Buffers the FPS
-* If buffer is null, it creates a new buffer
+* If buffer ever breaks, it creates a new buffer
 * Renders graphics
 
 ### GameObject.java
@@ -62,7 +62,7 @@ removeObject()
 * Removes an object from the game
 
 ### ID.java
-* It is an Enum
+* Enum
 * Stores the IDs of objects
 
 ### Window.java
