@@ -100,7 +100,7 @@ public class tomato extends JPanel {
 	private static final double moveSpeed = 0.06;
 	private static final double rotSpeed = 0.03;
 
-	private static final int transparencyLimit = 6;
+	private static final int transparencyLimit = 1;
 
 	rect rects[] = new rect[transparencyLimit*800];
 	// private static final ArrayList<Double> dists = new ArrayList<>();
@@ -312,9 +312,13 @@ public class tomato extends JPanel {
 						int texturecoords[] = {(int) (wallcoord * 100), 0, (int) (wallcoord * 100) + 1, 100};
 
 						hits++;
-						if (hits > transparencyLimit) hits = transparencyLimit;
+						boolean b = false;
+						if (hits >= transparencyLimit){
+							hits = transparencyLimit;
+							b = true;
+						}
 						rects[800*(transparencyLimit-hits)+x] = new rect(screencoords, texturecoords, walltexture, this);
-						// break;
+						if (b) break;
 					}
 					if (lenY < lenX) {
 						mapY += stepY;
