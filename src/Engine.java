@@ -21,7 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class tomato extends JPanel {
+public class Engine extends JPanel {
 
 	static class rect {
 		public int screencoords[];
@@ -174,7 +174,7 @@ public class tomato extends JPanel {
 	private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 	// Constructor required by BufferedImage
-	public tomato() throws IOException {
+	public Engine() throws IOException {
 
 
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
@@ -385,7 +385,7 @@ public class tomato extends JPanel {
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane(new tomato());
+		frame.setContentPane(new Engine());
 		frame.setVisible(true);
 	}
 
