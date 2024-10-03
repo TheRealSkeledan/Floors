@@ -131,7 +131,7 @@ public class Engine extends JPanel {
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		walltexture = ImageIO.read(new File("assets/images/textures/NoWhy.jpg"));
+		walltexture = ImageIO.read(new File("assets/images/textures/wall.png"));
 		elevatortexture = ImageIO.read(new File("assets/images/textures/door.png"));
 
 		timer = new Timer(10, new TimerListener());
