@@ -1,5 +1,3 @@
-
-//required import statements
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -165,7 +163,6 @@ public class Engine extends JPanel {
 
 	}
 
-	// required global variables
 	private final BufferedImage image;
 	private final BufferedImage walltexture;
 	private final BufferedImage floortexture;
@@ -174,7 +171,6 @@ public class Engine extends JPanel {
 
 	private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-	// Constructor required by BufferedImage
 	public Engine() throws IOException {
 
 
@@ -196,7 +192,6 @@ public class Engine extends JPanel {
 		setFocusable(true);
 	}
 
-	// TimerListener class that is called repeatedly by the timer
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -252,7 +247,6 @@ public class Engine extends JPanel {
 
 	}
 
-	// do not modify this
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -295,12 +289,12 @@ public class Engine extends JPanel {
 				}
 
 				double wallcoord;
+				double dist;
 
 				int hits = 0;
 				for (int i = 0; i < 200; i++) {
 					if ((mapX < 0 || mapX >= 48) || (mapY < 0 || mapY >= 48)) break;
 					if (map[mapX][mapY] != 0) {
-						double dist;
 						if (side == 0) {
 							dist = (lenX - dx);
 							double texturedist = dist * raydirY + posY;
@@ -347,10 +341,11 @@ public class Engine extends JPanel {
 			double raydirX = dirX + c*planeX;
 			double raydirY = dirY + c*planeY;
 			for (int y = 0; y < 400; y++){
-				double perpDist = 400.0/y;
+				double perpDist = 200.0/y;
 				double pixelx = (raydirX*perpDist + posX);
 				double pixely = (raydirY*perpDist + posY);
 				if ((pixelx >= 0 && pixelx <= 48) && (pixely >= 0 && pixely <= 48)){
+					if (map[(int)pixelx][(int)pixely] != 0) continue;
 					int imagex = (int)((pixelx-(int)pixelx)*100);
 					int imagey = (int)((pixely-(int)pixely)*100);
 					int pixelColor = floortexture.getRGB(imagex, imagey);
@@ -408,7 +403,7 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException {
-		JFrame frame = new JFrame("Animation Shell");
+		JFrame frame = new JFrame("Rishi x Avaline");
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
