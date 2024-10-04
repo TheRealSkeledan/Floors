@@ -168,6 +168,7 @@ public class Engine extends JPanel {
 	// required global variables
 	private final BufferedImage image;
 	private final BufferedImage walltexture;
+	private final BufferedImage floortexture;
 	private final Graphics g;
 	private final Timer timer;
 
@@ -181,11 +182,13 @@ public class Engine extends JPanel {
 		g = image.getGraphics();
 
 		walltexture = ImageIO.read(new File("assets/images/textures/wall.png"));
+		floortexture = ImageIO.read(new File("assets/images/textures/tax.png"));
 
 
 		for (int i = 0; i < 800; i++){
 			parallelizedX.add(i);
 		}
+
 
 		timer = new Timer(10, new TimerListener());
 		timer.start();
@@ -204,6 +207,8 @@ public class Engine extends JPanel {
 			g.fillRect(0, 0, 800, 800);
 
 			move();
+
+			drawFloor();
 
 			renderWalls();
 
@@ -253,7 +258,7 @@ public class Engine extends JPanel {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 	}
 
-	void renderWalls() {
+	public void renderWalls() {
 
 		parallelizedX.parallelStream().forEach(
 			x -> {
@@ -334,6 +339,28 @@ public class Engine extends JPanel {
 		);
 
 	}
+
+	public void drawFloor(){
+		parallelizedX.parallelStream().forEach(
+			x -> {
+			double c = x/400.0-1;
+			double raydirX = dirX + c*planeX;
+			double raydirY = dirY + c*planeY;
+			for (int y = 0; y < 400; y++){
+				double perpDist = 400.0/y;
+				double pixelx = (raydirX*perpDist + posX);
+				double pixely = (raydirY*perpDist + posY);
+				if ((pixelx >= 0 && pixelx <= 48) && (pixely >= 0 && pixely <= 48)){
+					int imagex = (int)((pixelx-(int)pixelx)*100);
+					int imagey = (int)((pixely-(int)pixely)*100);
+					int pixelColor = floortexture.getRGB(imagex, imagey);
+					image.setRGB(x, 400+y, pixelColor);
+				}
+			}
+		});
+	}
+	
+	
 
 	public static void move() {
 
