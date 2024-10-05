@@ -80,7 +80,8 @@ public class Room {
 			}
 		};
 
-		int[][] room = maps[(int)(Math.random() * maps.length)];
+		// int[][] room = maps[(int)(Math.random() * maps.length)];
+		int[][] room = maps[1];
 
 		return room;
 	}
