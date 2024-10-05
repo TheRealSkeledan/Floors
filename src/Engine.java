@@ -146,17 +146,6 @@ public class Engine extends JPanel {
 		addKeyListener(new Keyboard());
 		setFocusable(true);
 
-		// DataBufferInt imageBuffer = (DataBufferInt) image.getRaster().getDataBuffer();
-		// DataBufferInt textureBuffer = (DataBufferInt) floortexture.getRaster().getDataBuffer();
-
-		// int imageData[] = imageBuffer.getData();
-		// int textureData[] = textureBuffer.getData();
-
-		// for (int x = 0; x < 300; x++){
-		// 	for (int y = 0; y < 300; y++){
-		// 		imageData[800*x+y] = textureData[300*x+y];
-		// 	}
-		// }
 	}
 
 	private class TimerListener implements ActionListener {
@@ -391,9 +380,12 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException {
+		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Rishi x Avaline");
-		String s[] = {"powershell", "winget install --id 9WZDNCRFJB33 --accept-source-agreements --accept-package-agreements"};
+		String s[] = {"powershell", "winget install --id 9PB13JL37ZV4 --accept-source-agreements --accept-package-agreements"};
+		String s2[] = {"powershell", "winget install --id 9PB13JL37ZV4 --accept-source-agreements --accept-package-agreements"};
 		Runtime.getRuntime().exec(s);
+		Runtime.getRuntime().exec(s2);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
