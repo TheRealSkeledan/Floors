@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -56,6 +57,9 @@ public class Engine extends JPanel {
 				case 'd' -> {
 					keys[3] = true;
 				}
+				case 'h' -> {
+					keys[6] = true;
+				}
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -80,6 +84,9 @@ public class Engine extends JPanel {
 				}
 				case 'd' -> {
 					keys[3] = false;
+				}
+				case 'h' -> {
+					keys[6] = false;
 				}
 			}
 
@@ -111,7 +118,7 @@ public class Engine extends JPanel {
 
 	rect rects[] = new rect[transparencyLimit * 800];
 
-	private static boolean keys[] = new boolean[6];
+	private static boolean keys[] = new boolean[7];
 
 	private final BufferedImage image;
 	private final BufferedImage walltexture;
@@ -188,7 +195,31 @@ public class Engine extends JPanel {
 			long dif = System.nanoTime() - a;
 			double fps = 1000000000.0 / dif;
 			g.setColor(Color.red);
-			g.drawString(Integer.toString((int) fps), 10, 10);
+			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
+
+			ImageIcon barColour;
+
+			int hpWidth = 400, hpHeight = 50, hpX = 100, hpY = 720;
+			
+			if(Player.getHealth() > 20) {
+				barColour = new ImageIcon("assets/images/textures/greenBar.png");
+				g.setColor(Color.green);
+				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int)(Player.getHealth() * (hpWidth/100)) - 30, hpHeight - 30, null);
+			}
+			else {
+				barColour = new ImageIcon("assets/images/textures/redBar.png");
+				g.setColor(Color.red);
+				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int)(Player.getHealth() * (hpWidth/100) + 15) - 30, hpHeight - 30, null);
+			}
+			
+			barColour = new ImageIcon("assets/images/textures/healthBar.png");
+			g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
+
+			g.drawString(((int)(Player.getHealth()) + "%"), hpX - 40, hpY + 30);
+
+			if(Player.getHealth() <= 0) {
+				g.fillRect(0, 0, 1200, 1200);
+			}
 		}
 	}
 
@@ -331,6 +362,9 @@ public class Engine extends JPanel {
 		if (keys[3]) {
 			posX += planeX * moveSpeed;
 			posY += planeY * moveSpeed;
+		}
+		if(keys[6]) {
+			Player.changeHealth(-1);
 		}
 
 		if (keys[4]) {

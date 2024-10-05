@@ -1,11 +1,10 @@
 public class Player {
-	private int hp, dmg, x, y;
+	private static int hp = 100, dmg, x, y;
 	protected double speed;
 	
-	public Player(int hp, int dmg, double speed) {
+	public Player() {
 		x = 0;
 		y = 0;
-		this.hp = hp;
 		this.dmg = dmg;
 		this.speed = speed;
 	}
@@ -16,6 +15,14 @@ public class Player {
 	
 	public void move() {
 		// Code moving here
+	}
+
+	public static int getHealth() {
+		return hp;
+	}
+
+	public static void changeHealth(int amount) {
+		hp += amount;
 	}
 
 	public void sounds() {
