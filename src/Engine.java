@@ -7,13 +7,14 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.ImageObserver;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,13 +26,11 @@ public class Engine extends JPanel {
 		public int screencoords[];
 		public int texturecoords[];
 		public BufferedImage texture;
-		public ImageObserver imObserver;
 
 		public rect(int s[], int t[], BufferedImage c, ImageObserver o) {
 			screencoords = s;
 			texturecoords = t;
 			texture = c;
-			imObserver = o;
 		}
 	}
 
@@ -99,7 +98,6 @@ public class Engine extends JPanel {
 
 	}
 
-
 	private static final int map[][] = Room.createRoom();
 	private static final int mapLen = map.length;
 
@@ -113,7 +111,7 @@ public class Engine extends JPanel {
 	private static final double moveSpeed = 0.06;
 	private static final double rotSpeed = 0.03;
 
-	private static final int transparencyLimit = 1;
+	private static final int transparencyLimit = 5;
 
 	rect rects[] = new rect[transparencyLimit * 800];
 
@@ -133,12 +131,11 @@ public class Engine extends JPanel {
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		walltexture = ImageLoader.loadImageAsRGB("assets/images/textures/wall.png");
+		// walltexture =
+		// ImageLoader.loadImageAsRGB("assets/images/textures/window.png");
+		walltexture = ImageIO.read(new File("assets/images/textures/window.png"));
 		doortexture = ImageLoader.loadImageAsRGB("assets/images/textures/door.png");
 		floortexture = ImageLoader.loadImageAsRGB("assets/images/textures/floor.png");
-		for (int i = 0; i < 800; i++) {
-			parallelizedX.add(i);
-		}
 
 		timer = new Timer(10, new TimerListener());
 		timer.start();
@@ -156,7 +153,7 @@ public class Engine extends JPanel {
 			move();
 			// drawFloor();
 			renderWalls();
-			for (int i = transparencyLimit - 1; i >= 0; i--) {
+			for (int i = 0; i < transparencyLimit; i++) {
 				Future<?> futures[] = new Future<?>[800];
 				int n = 0;
 				for (int j = 0; j < 800; j++) {
@@ -165,7 +162,7 @@ public class Engine extends JPanel {
 						continue;
 					Future<?> future = executor.submit(() -> g.drawImage(walltexture, r.screencoords[0],
 							r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0],
-							r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], r.imObserver));
+							r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], null));
 					futures[n] = future;
 					n++;
 				}
@@ -262,11 +259,11 @@ public class Engine extends JPanel {
 					if (side == 0) {
 						dist = (lenX - dx);
 						double texturedist = dist * raydirY + posY;
-						wallcoord = texturedist - Math.floor(texturedist);
+						wallcoord = texturedist - (int) texturedist;
 					} else {
 						dist = (lenY - dy);
 						double texturedist = dist * raydirX + posX;
-						wallcoord = texturedist - Math.floor(texturedist);
+						wallcoord = texturedist - (int) texturedist;
 					}
 
 					int lineHeight = (int) (800 / (dist));
