@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -182,28 +181,7 @@ public class Engine extends JPanel {
 			g.setColor(Color.red);
 			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
 
-			ImageIcon barColour;
-
-			int hpWidth = 300, hpHeight = 50, hpX = 10, hpY = 740;
-
-			if (Player.getHealth() > 20) {
-				barColour = new ImageIcon("assets/images/textures/greenBar.png");
-				g.setColor(Color.green);
-				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (Player.getHealth() * (hpWidth / 100)) - 30,
-						hpHeight - 30, null);
-			} else {
-				barColour = new ImageIcon("assets/images/textures/redBar.png");
-				g.setColor(Color.red);
-				g.drawImage(barColour.getImage(), hpX + 15, hpY + 15,
-						(int) (Player.getHealth() * (hpWidth / 100) + 30) - 30, hpHeight - 30, null);
-			}
-
-			barColour = new ImageIcon("assets/images/textures/healthBar.png");
-			g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
-
-			if (Player.getHealth() <= 0) {
-				g.fillRect(0, 0, 1200, 1200);
-			}
+			Player.drawHealthBar(g);
 		}
 	}
 
