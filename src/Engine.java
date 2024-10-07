@@ -199,6 +199,7 @@ public class Engine extends JPanel {
 			g.setColor(Color.red);
 			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
 
+			Player.drawHands(g);
 			Player.drawHealthBar(g);
 		}
 	}
@@ -418,8 +419,7 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException, InterruptedException {
-		System.setProperty("sun.java2d.opengl", "true");
-		JFrame frame = new JFrame("Rishi x Avaline");
+		JFrame frame = new JFrame("Floors");
 		Player p = new Player();
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);

@@ -55,6 +55,14 @@ public class Player {
 		}
 	}
 
+	public static void drawHands(Graphics g) {
+		ImageIcon rightHand, leftHand;
+
+		rightHand = new ImageIcon("assets/images/weapons/rightHand.png");
+		leftHand = new ImageIcon("assets/images/weapons/leftHand.png");
+		g.drawImage(rightHand.getImage(), 720, 740, 300, 300, null);
+	}
+
 	public void sounds() {
 		// COde sounds here
 	}
