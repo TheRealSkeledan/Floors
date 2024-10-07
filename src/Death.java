@@ -15,10 +15,9 @@ public class Death {
 			angel = 1;
 		else
 			angel = 3;
-		
 	}
 
-	public static void createAngel(Graphics g) {
+	public void createAngel(Graphics g) {
 		if(angel == 0) {
 			g.setColor(new Color(64, 224, 208));
 			System.out.println("Curious Angel Speaks");

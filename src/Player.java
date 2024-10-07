@@ -4,16 +4,10 @@ import javax.swing.ImageIcon;
 
 public class Player {
 	private static int hp = 100, dmg;
-	private static int angel;
+	private static Death dead;
 	
 	public Player() {
-		int angelnum = (int)(Math.random() * 15);
-		if(angelnum <= 3)
-			angel = 0;
-		if(angelnum == 4)
-			angel = 1;
-		else
-			angel = 3;
+		
 	}
 
 	public void shoot() {
@@ -51,19 +45,8 @@ public class Player {
 		
 
 		if (getHealth() <= 0) {
-			if(angel == 0) {
-				g.setColor(new Color(64, 224, 208));
-				System.out.println("Curious Angel Speaks");
-			}
-			else if(angel == 1) {
-				g.setColor(new Color(145, 17, 34));
-				System.out.println("Mischievous Celestial Speaks");
-			}
-			else {
-				g.setColor(new Color(127, 255, 212));
-				System.out.println("True Angel Speaks");
-			}
-			g.fillRect(0, 0, 1200, 1200);
+			dead = new Death();
+			dead.createAngel(g);
 		}
 	}
 
