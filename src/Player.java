@@ -3,16 +3,11 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
 public class Player {
-	private static int hp = 100, dmg, x, y;
-	protected double speed;
+	private static int hp = 100, dmg;
 	private static int angel;
 	
 	public Player() {
-		x = 0;
-		y = 0;
-		this.dmg = dmg;
-		this.speed = speed;
-		int angelnum = (int)(Math.random() * 10);
+		int angelnum = (int)(Math.random() * 15);
 		if(angelnum <= 3)
 			angel = 0;
 		if(angelnum == 4)
@@ -23,10 +18,6 @@ public class Player {
 
 	public void shoot() {
 		// Code shooting here
-	}
-	
-	public void move() {
-		// Code moving here
 	}
 
 	public static int getHealth() {
@@ -39,7 +30,6 @@ public class Player {
 
 	public static void drawHealthBar(Graphics g) {
 		ImageIcon barColour;
-		int angelnum;
 
 		int hpWidth = 300, hpHeight = 50, hpX = 10, hpY = 740;
 
@@ -61,19 +51,18 @@ public class Player {
 		
 
 		if (getHealth() <= 0) {
-			switch(angel) {
-				case 0:
-					g.setColor(new Color(64, 224, 208));
-					System.out.println("Curious Angel Speaks");
-					break;
-				case 1:
-					g.setColor(new Color(145, 17, 34));
-					System.out.println("Mischievous Celestial Speaks");
-					break;
-				default:
-					g.setColor(new Color(127, 255, 212));
-					System.out.println("True Angel Speaks");
-			};
+			if(angel == 0) {
+				g.setColor(new Color(64, 224, 208));
+				System.out.println("Curious Angel Speaks");
+			}
+			else if(angel == 1) {
+				g.setColor(new Color(145, 17, 34));
+				System.out.println("Mischievous Celestial Speaks");
+			}
+			else {
+				g.setColor(new Color(127, 255, 212));
+				System.out.println("True Angel Speaks");
+			}
 			g.fillRect(0, 0, 1200, 1200);
 		}
 	}
