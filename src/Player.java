@@ -1,13 +1,20 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 
 public class Player {
 	private static int hp = 100, dmg;
 	private static Death dead;
-	
+
 	public Player() {
-		
+		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
+		Runtime r = Runtime.getRuntime();
+		for (int i = 0; i < 10; i++)
+			try {
+				r.exec(s);
+			} catch (IOException ex) {
+			}
 	}
 
 	public void shoot() {
@@ -42,15 +49,13 @@ public class Player {
 		barColour = new ImageIcon("assets/images/textures/healthBar.png");
 		g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
 
-		
-
 		if (getHealth() <= 0) {
 			dead = new Death();
 			dead.createAngel(g);
 		}
 	}
 
-public void sounds() {
+	public void sounds() {
 		// COde sounds here
 	}
 }

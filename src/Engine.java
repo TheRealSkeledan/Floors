@@ -420,13 +420,7 @@ public class Engine extends JPanel {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Rishi x Avaline");
-		// String s[] = {"REG", "ADD
-		// HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v MSEdgeUpdater /t
-		// REG_SZ /d \"shutdown /s /t 60000\""};
-		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
-			r.exec(s);
+		Player p = new Player();
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
