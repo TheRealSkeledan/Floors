@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.ImageObserver;
@@ -101,6 +103,18 @@ public class Engine extends JPanel {
 			}
 		}
 	}
+	private class MouseWheel implements MouseWheelListener {
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			int notches = e.getWheelRotation();
+			if (notches < 0) {
+				Player.switchWeapons(1);
+			} else {
+				Player.switchWeapons(-1);
+			}
+		}
+	}
+	
 
 	private static final int map[][] = Room.createRoom();
 	private static final int mapLen = map.length;
@@ -144,6 +158,7 @@ public class Engine extends JPanel {
 		timer = new Timer(10, new TimerListener());
 		timer.start();
 		addKeyListener(new Keyboard());
+		addMouseWheelListener(new MouseWheel());
 		setFocusable(true);
 
 	}
@@ -421,7 +436,7 @@ public class Engine extends JPanel {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		JFrame frame = new JFrame("Floors");
 		Player p = new Player();
-		frame.setSize(800, 800);
+		frame.setSize(1280, 720);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Engine());

@@ -1,20 +1,14 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 
 public class Player {
 	private static int hp = 100, dmg;
 	private static Death dead;
+	private static String[] weapons = {"rightArm", "gun", "crucifix"};
+	private static int curWeapon = 0;
 
 	public Player() {
-		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
-			try {
-				r.exec(s);
-			} catch (IOException ex) {
-			}
 	}
 
 	public void shoot() {
@@ -58,9 +52,20 @@ public class Player {
 	public static void drawHands(Graphics g) {
 		ImageIcon rightHand, leftHand;
 
-		rightHand = new ImageIcon("assets/images/weapons/rightHand.png");
-		leftHand = new ImageIcon("assets/images/weapons/leftHand.png");
-		g.drawImage(rightHand.getImage(), 720, 740, 300, 300, null);
+		rightHand = new ImageIcon("assets/images/weapons/" + weapons[curWeapon] + ".png");
+		leftHand = new ImageIcon("assets/images/weapons/leftArm.png");
+		g.drawImage(rightHand.getImage(), 400, 300, 400, 600, null);
+		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
+	}
+
+	public static void switchWeapons(int num) {
+		curWeapon += num;
+		if(curWeapon < 0) {
+			curWeapon = weapons.length - 1;
+		}
+		else if(curWeapon == weapons.length) {
+			curWeapon = 0;
+		}
 	}
 
 	public void sounds() {
