@@ -63,6 +63,11 @@ public class Engine extends JPanel {
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				keys[5] = true;
 			}
+
+			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				keys[7] = true;
+				moveSpeed += 0.1;
+			}
 		}
 
 		@Override
@@ -90,6 +95,10 @@ public class Engine extends JPanel {
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				keys[5] = false;
 			}
+			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				keys[7] = false;
+				moveSpeed -= 0.1;
+			}
 		}
 	}
 
@@ -103,14 +112,14 @@ public class Engine extends JPanel {
 	private static double planeX = 0;
 	private static double planeY = 0.65;
 
-	private static final double moveSpeed = 0.06;
+	private static double moveSpeed = 0.06;
 	private static final double rotSpeed = 0.03;
 
 	private static final int transparencyLimit = 2;
 
 	rect rects[] = new rect[transparencyLimit * 800];
 
-	private static boolean keys[] = new boolean[7];
+	private static boolean keys[] = new boolean[8];
 
 	private final BufferedImage image;
 	private final BufferedImage walltexture;
@@ -119,6 +128,8 @@ public class Engine extends JPanel {
 	private final Graphics g;
 	private final Timer timer;
 
+	private Player player = new Player();
+
 	private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 	public Engine() throws IOException {
@@ -126,7 +137,7 @@ public class Engine extends JPanel {
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		walltexture = ImageIO.read(new File("assets/images/textures/window.png"));
+		walltexture = ImageIO.read(new File("assets/images/textures/wall.png"));
 		doortexture = ImageLoader.loadImageAsRGB("assets/images/textures/door.png");
 		floortexture = ImageLoader.loadImageAsRGB("assets/images/textures/floor.png");
 

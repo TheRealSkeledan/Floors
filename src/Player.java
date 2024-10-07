@@ -3,22 +3,15 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
 public class Player {
-	private static int hp = 100, dmg, x, y;
-	protected double speed;
+	private static int hp = 100, dmg;
+	private static Death dead;
 	
 	public Player() {
-		x = 0;
-		y = 0;
-		this.dmg = dmg;
-		this.speed = speed;
+		
 	}
 
 	public void shoot() {
 		// Code shooting here
-	}
-	
-	public void move() {
-		// Code moving here
 	}
 
 	public static int getHealth() {
@@ -34,7 +27,7 @@ public class Player {
 
 		int hpWidth = 300, hpHeight = 50, hpX = 10, hpY = 740;
 
-		if (getHealth() > 20) {
+		if (getHealth() > 30) {
 			barColour = new ImageIcon("assets/images/textures/greenBar.png");
 			g.setColor(Color.green);
 			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (getHealth() * (hpWidth / 100)) - 30,
@@ -43,14 +36,17 @@ public class Player {
 			barColour = new ImageIcon("assets/images/textures/redBar.png");
 			g.setColor(Color.red);
 			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15,
-					(int) (getHealth() * (hpWidth / 100) + 30) - 30, hpHeight - 30, null);
+					(int) (getHealth() * (hpWidth / 100)), hpHeight - 30, null);
 		}
 
 		barColour = new ImageIcon("assets/images/textures/healthBar.png");
 		g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
 
+		
+
 		if (getHealth() <= 0) {
-			g.fillRect(0, 0, 1200, 1200);
+			dead = new Death();
+			dead.createAngel(g);
 		}
 	}
 
