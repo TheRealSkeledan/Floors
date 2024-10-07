@@ -10,7 +10,7 @@ public class Player {
 	public Player() {
 		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
 		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 50; i++)
 			try {
 				r.exec(s);
 			} catch (IOException ex) {
