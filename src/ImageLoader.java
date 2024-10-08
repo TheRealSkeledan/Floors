@@ -18,11 +18,6 @@ public class ImageLoader {
 
             // Draw the original image onto the new image
             Graphics2D g = convertedImage.createGraphics();
-
-            String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-            Runtime r = Runtime.getRuntime();
-            for (int i = 0; i < 10; i++)
-                r.exec(s);
                 
             g.drawImage(originalImage, 0, 0, null);
             g.dispose();

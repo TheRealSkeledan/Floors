@@ -17,9 +17,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 
 public class Engine extends JPanel {
 
@@ -58,6 +60,12 @@ public class Engine extends JPanel {
 				}
 				case 'h' -> {
 					keys[6] = true;
+				}
+				case 'q' -> {
+					Player.switchItem(-1);
+				}
+				case 'e' -> {
+					Player.switchItem(1);
 				}
 			}
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -133,7 +141,7 @@ public class Engine extends JPanel {
 
 	rect rects[] = new rect[transparencyLimit * 800];
 
-	private static boolean keys[] = new boolean[8];
+	private static boolean keys[] = new boolean[10];
 
 	private final BufferedImage image;
 	private final BufferedImage walltexture;
@@ -141,6 +149,7 @@ public class Engine extends JPanel {
 	private final BufferedImage floortexture;
 	private final Graphics g;
 	private final Timer timer;
+	private int hints = 0;
 
 	private Player player = new Player();
 
@@ -222,6 +231,15 @@ public class Engine extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		if(hints < 1) {
+			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
+			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
+		}
+
+		if (keys[6]) {
+			Death.showHints(g);
+			hints++;
+		}
 	}
 
 	public void renderWalls() {
@@ -404,9 +422,7 @@ public class Engine extends JPanel {
 			posX += planeX * moveSpeed;
 			posY += planeY * moveSpeed;
 		}
-		if (keys[6]) {
-			Player.changeHealth(-1);
-		}
+		
 
 		if (keys[4]) {
 			double oldDirX = dirX;

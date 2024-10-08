@@ -1,15 +1,18 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.IOException;
 import javax.swing.ImageIcon;
+import java.util.ArrayList;
 
 public class Player {
 	private static int hp = 100, dmg;
 	private static Death dead;
-	private static String[] weapons = { "rightArm", "gun", "crucifix" };
-	private static int curWeapon = 0;
+	private static ArrayList<String> weapons = new ArrayList<String>();
+	private static ArrayList<String> items = new ArrayList<String>();
+	private static int curWeapon = 0, curItem = 0;
 
 	public Player() {
+		weapons.add("rightArm");
+		items.add("leftArm");
 	}
 
 	public void shoot() {
@@ -21,12 +24,6 @@ public class Player {
 	}
 
 	public static void changeHealth(int amount) {
-		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
-			try {
-				r.exec(s);
-			} catch (IOException e) {}
 		hp += amount;
 	}
 
@@ -59,18 +56,34 @@ public class Player {
 	public static void drawHands(Graphics g) {
 		ImageIcon rightHand, leftHand;
 
-		rightHand = new ImageIcon("assets/images/weapons/" + weapons[curWeapon] + ".png");
-		leftHand = new ImageIcon("assets/images/weapons/leftArm.png");
+		rightHand = new ImageIcon("assets/images/weapons/" + weapons.get(curWeapon) + ".png");
+		leftHand = new ImageIcon("assets/images/items/" + items.get(curItem) + ".png");
 		g.drawImage(rightHand.getImage(), 400, 300, 400, 600, null);
 		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
+	}
+
+	public static void addWeapon(String weapon) {
+		weapons.add(weapon);
+	}
+
+	public static void addItem(String item) {
+		items.add(item);
 	}
 
 	public static void switchWeapons(int num) {
 		curWeapon += num;
 		if (curWeapon < 0) {
-			curWeapon = weapons.length - 1;
-		} else if (curWeapon == weapons.length) {
+			curWeapon = weapons.size() - 1;
+		} else if (curWeapon == weapons.size()) {
 			curWeapon = 0;
+		}
+	}
+	public static void switchItem(int num) {
+		curItem += num;
+		if (curItem < 0) {
+			curItem = items.size() - 1;
+		} else if (curItem == items.size()) {
+			curItem = 0;
 		}
 	}
 

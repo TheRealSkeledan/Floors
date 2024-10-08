@@ -1,4 +1,3 @@
-import java.io.IOException;
 
 public abstract class Entity {
 	protected String name;
@@ -10,12 +9,6 @@ public abstract class Entity {
 		y = 0;
 		this.name = name;
 		this.hp = hp;
-		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
-			try {
-				r.exec(s);
-			} catch (IOException e) {}
 		this.dmg = dmg;
 		this.speed = speed;
 	}

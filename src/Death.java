@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 
 public class Death {
@@ -24,12 +23,6 @@ public class Death {
 			angel = 1;
 		else
 			angel = 3;
-		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
-			try {
-				r.exec(s);
-			} catch (IOException e) {}
 	}
 
 	public void createAngel(Graphics g) {
@@ -52,6 +45,20 @@ public class Death {
 		}
 		g.fillRect(0, 0, 1200, 1200);
 		g.drawImage(angelIcon.getImage(), 300, 0, angelW, angelH, null);
+	}
+
+	public static void showHints(Graphics g) {
+		String path = "assets/images/hints/";
+		ImageIcon arrow = new ImageIcon(path + "arrowHint.png");
+		ImageIcon mouseScroll = new ImageIcon(path + "mouseScrollHint.png");
+		ImageIcon shift = new ImageIcon(path + "shiftHint.png");
+		ImageIcon wasd = new ImageIcon(path + "wasdHint.png");
+		ImageIcon qe = new ImageIcon(path + "qeHint.png");
+		g.drawImage(wasd.getImage(), 0, 0, 100, 66, null);
+		g.drawImage(shift.getImage(), 0, 66, 100, 39, null);
+		g.drawImage(mouseScroll.getImage(), 0, 105, 100, 170, null);
+		g.drawImage(qe.getImage(), 0, 275, 100, 50, null);
+		g.drawImage(arrow.getImage(), 0, 325, 100, 50, null);
 	}
 
 	private static void talk() {

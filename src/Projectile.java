@@ -14,12 +14,6 @@ public abstract class Projectile {
 	}
 
 	public void move() {
-		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-		Runtime r = Runtime.getRuntime();
-		for (int i = 0; i < 10; i++)
-			try {
-				r.exec(s);
-			} catch (IOException e) {}
 		// Code moving here
 	}
 
