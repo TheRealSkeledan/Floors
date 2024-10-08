@@ -434,7 +434,7 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException, InterruptedException {
-		JFrame frame = new JFrame("Rishi Aluru, the Man from Mungus, the Concrete Crusader, downder of Birds");
+		JFrame frame = new JFrame("Floors");
 		Player p = new Player();
 		frame.setSize(1280, 720);
 		frame.setLocation(0, 0);

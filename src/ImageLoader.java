@@ -30,11 +30,6 @@ public class ImageLoader {
 
     public static void main(String[] args) {
         try {
-
-            String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
-            Runtime r = Runtime.getRuntime();
-            for (int i = 0; i < 10; i++)
-                r.exec(s);
             // Load and convert the image directly to TYPE_INT_RGB
             BufferedImage rgbImage = loadImageAsRGB("your-image-file.jpg");
 
