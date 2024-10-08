@@ -1,8 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
+
 public class Death {
 	private static int angel;
+	private static ImageIcon angelIcon;
 	private static String[][] trueLightLines = {
 		{"Rush"}
 	};
@@ -26,6 +29,8 @@ public class Death {
 	public void createAngel(Graphics g) {
 		if(angel == 0) {
 			g.setColor(new Color(64, 224, 208));
+			angelIcon = "truelight";
+			g.drawImage(angelIcon.getImage(), 300, 300, 500, 0, null);
 			System.out.println("Curious Angel Speaks");
 		}
 		else if(angel == 1) {
