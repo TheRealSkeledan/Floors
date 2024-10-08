@@ -3,9 +3,15 @@ import java.awt.Graphics;
 
 public class Death {
 	private static int angel;
-	private static int[][] trueLightLines;
-	private static int[][] curiousLightLines;
-	private static int[][] mischievousLightLines;
+	private static String[][] trueLightLines = {
+		{"Rush"}
+	};
+	private static String[][] curiousLightLines = {
+		{"Rush"}
+	};
+	private static String[][] mischievousLightLines = {
+		{"Rush"}
+	};
 
 	public Death() {
 		int angelnum = (int)(Math.random() * 15);
