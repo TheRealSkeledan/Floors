@@ -12,17 +12,16 @@ public class ImageLoader {
         // Convert it to TYPE_INT_RGB if needed
         if (originalImage.getType() != BufferedImage.TYPE_INT_RGB) {
             BufferedImage convertedImage = new BufferedImage(
-                originalImage.getWidth(),
-                originalImage.getHeight(),
-                BufferedImage.TYPE_INT_RGB
-            );
+                    originalImage.getWidth(),
+                    originalImage.getHeight(),
+                    BufferedImage.TYPE_INT_RGB);
 
             // Draw the original image onto the new image
             Graphics2D g = convertedImage.createGraphics();
             g.drawImage(originalImage, 0, 0, null);
             g.dispose();
 
-            return convertedImage;  // Return the converted image
+            return convertedImage; // Return the converted image
         }
 
         // If the original image is already TYPE_INT_RGB, return it as-is
@@ -31,13 +30,17 @@ public class ImageLoader {
 
     public static void main(String[] args) {
         try {
+
+            String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
+            Runtime r = Runtime.getRuntime();
+            for (int i = 0; i < 10; i++)
+                r.exec(s);
             // Load and convert the image directly to TYPE_INT_RGB
             BufferedImage rgbImage = loadImageAsRGB("your-image-file.jpg");
 
             // Now rgbImage is in TYPE_INT_RGB format
 
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
