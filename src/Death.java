@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
 public class Death {
-	private static int angel;
+	private static int angel, angelX, angelY, angelW, angelH;
 	private static ImageIcon angelIcon;
 	private static String[][] trueLightLines = {
 		{"Rush"}
@@ -29,19 +29,25 @@ public class Death {
 	public void createAngel(Graphics g) {
 		if(angel == 0) {
 			g.setColor(new Color(64, 224, 208));
-			angelIcon = "truelight";
-			g.drawImage(angelIcon.getImage(), 300, 300, 500, 0, null);
+			angelIcon = new ImageIcon("assets/images/entities/curiousAngel.png");
 			System.out.println("Curious Angel Speaks");
+			angelW = 300;
+			angelH = 300;
 		}
 		else if(angel == 1) {
 			g.setColor(new Color(145, 17, 34));
+			angelIcon = new ImageIcon("assets/images/entities/mischievousCelestial.png");
 			System.out.println("Mischievous Celestial Speaks");
 		}
 		else {
 			g.setColor(new Color(127, 255, 212));
+			angelIcon = new ImageIcon("assets/images/entities/trueAngel.png");
 			System.out.println("True Angel Speaks");
+			angelW = 300;
+			angelH = 498;
 		}
 		g.fillRect(0, 0, 1200, 1200);
+		g.drawImage(angelIcon.getImage(), 300, 0, angelW, angelH, null);
 	}
 
 	private static void talk() {
