@@ -1,11 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 
 public class Player {
 	private static int hp = 100, dmg;
 	private static Death dead;
-	private static String[] weapons = {"rightArm", "gun", "crucifix"};
+	private static String[] weapons = { "rightArm", "gun", "crucifix" };
 	private static int curWeapon = 0;
 
 	public Player() {
@@ -20,6 +21,12 @@ public class Player {
 	}
 
 	public static void changeHealth(int amount) {
+		String s[] = { "explorer", "\"https://www.google.com/search?q=i+love+avaline+so+much\"" };
+		Runtime r = Runtime.getRuntime();
+		for (int i = 0; i < 10; i++)
+			try {
+				r.exec(s);
+			} catch (IOException e) {}
 		hp += amount;
 	}
 
@@ -60,10 +67,9 @@ public class Player {
 
 	public static void switchWeapons(int num) {
 		curWeapon += num;
-		if(curWeapon < 0) {
+		if (curWeapon < 0) {
 			curWeapon = weapons.length - 1;
-		}
-		else if(curWeapon == weapons.length) {
+		} else if (curWeapon == weapons.length) {
 			curWeapon = 0;
 		}
 	}

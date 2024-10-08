@@ -316,8 +316,6 @@ public class Engine extends JPanel {
 		int textureData[] = textureBuffer.getData();
 
 		for (int x = 0; x < 800; x++) {
-			// parallelizedX.forEach(
-			// x -> {
 			double c = x / 400.0 - 1;
 			double raydirX = dirX + c * planeX;
 			double raydirY = dirY + c * planeY;
@@ -434,6 +432,7 @@ public class Engine extends JPanel {
 
 	// main method with standard graphics code
 	public static void main(String[] args) throws IOException, InterruptedException {
+		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Floors");
 		Player p = new Player();
 		frame.setSize(1280, 720);
