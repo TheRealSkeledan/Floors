@@ -18,7 +18,7 @@ public class ImageLoader {
 
             // Draw the original image onto the new image
             Graphics2D g = convertedImage.createGraphics();
-                
+
             g.drawImage(originalImage, 0, 0, null);
             g.dispose();
 
@@ -27,17 +27,5 @@ public class ImageLoader {
 
         // If the original image is already TYPE_INT_RGB, return it as-is
         return originalImage;
-    }
-
-    public static void main(String[] args) {
-        try {
-
-            // Load and convert the image directly to TYPE_INT_RGB
-            BufferedImage rgbImage = loadImageAsRGB("your-image-file.jpg");
-
-            // Now rgbImage is in TYPE_INT_RGB format
-
-        } catch (IOException e) {
-        }
     }
 }

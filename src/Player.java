@@ -1,21 +1,28 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.ImageIcon;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 public class Player {
 	private static int hp = 100, dmg;
 	private static Death dead;
-	private static ArrayList<String> weapons = new ArrayList<String>();
-	private static ArrayList<String> items = new ArrayList<String>();
+	private static ArrayList<String> weapons = new ArrayList<>();
+	private static ArrayList<String> items = new ArrayList<>();
 	private static int curWeapon = 0, curItem = 0;
 
-	public Player() {
+	public static double posX = 3, posY = 3;
+	public static double dirX = -1, dirY = 0;
+	public static double planeX = 0, planeY = 0.65;
+	public static double moveSpeed = 0.06;
+	public static double rotSpeed = 0.03;
+	public static double moveBoost = 0.07, rotBoost = 0.005;
+
+	public static void init() {
 		weapons.add("rightArm");
 		items.add("leftArm");
 	}
 
-	public void shoot() {
+	public static void shoot() {
 		// Code shooting here
 	}
 
@@ -87,7 +94,7 @@ public class Player {
 		}
 	}
 
-	public void sounds() {
+	public static void sounds() {
 		// COde sounds here
 	}
 }

@@ -7,15 +7,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Main extends JPanel {
+
 
 	private class Keyboard implements KeyListener {
 		@Override
@@ -56,7 +55,6 @@ public class Main extends JPanel {
 
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				keys[7] = true;
-				moveSpeed += 0.1;
 			}
 		}
 
@@ -87,7 +85,6 @@ public class Main extends JPanel {
 			}
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				keys[7] = false;
-				moveSpeed -= 0.1;
 			}
 		}
 	}
@@ -104,30 +101,13 @@ public class Main extends JPanel {
 		}
 	}
 
-	private static final int map[][] = Room.createRoom();
-	private static final int mapLen = map.length;
-
-	private static double posX = 3;
-	private static double posY = 3;
-	private static double dirX = -1;
-	private static double dirY = 0;
-	private static double planeX = 0;
-	private static double planeY = 0.65;
-
-	private static double moveSpeed = 0.06;
-	private static final double rotSpeed = 0.03;
 
 	private static boolean keys[] = new boolean[10];
 
 	private final BufferedImage image;
-	private final BufferedImage walltexture;
-	private final BufferedImage doortexture;
-	private final BufferedImage floortexture;
 	private final Graphics g;
 	private final Timer timer;
 	private int hints = 0;
-
-	private Player player = new Player();
 
 
 	public Main() throws IOException {
@@ -135,9 +115,7 @@ public class Main extends JPanel {
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		walltexture = ImageIO.read(new File("assets/images/textures/wall.png"));
-		doortexture = ImageLoader.loadImageAsRGB("assets/images/textures/door.png");
-		floortexture = ImageLoader.loadImageAsRGB("assets/images/textures/floor.png");
+		
 
 		timer = new Timer(10, new TimerListener());
 		timer.start();
@@ -154,6 +132,8 @@ public class Main extends JPanel {
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 800, 800);
 			move();
+
+			Engine.draw(g, image);
 			
 			repaint();
 			long dif = System.nanoTime() - a;
@@ -194,47 +174,55 @@ public class Main extends JPanel {
 	}
 
 
-	public static void move() {
+	public void move() {
 
-		double oldX = posX;
-		double oldY = posY;
+		double oldX = Player.posX;
+		double oldY = Player.posY;
+
+		double rot = Player.rotSpeed;
+		double mov = Player.moveSpeed;
+
+		if (keys[7]){
+			rot += Player.rotBoost;
+			mov += Player.moveBoost;
+		}
 
 		if (keys[0]) {
-			posX += dirX * moveSpeed;
-			posY += dirY * moveSpeed;
+			Player.posX += Player.dirX * mov;
+			Player.posY += Player.dirY * mov;
 		}
 		if (keys[1]) {
-			posX -= planeX * moveSpeed;
-			posY -= planeY * moveSpeed;
+			Player.posX -= Player.planeX * mov;
+			Player.posY -= Player.planeY * mov;
 		}
 		if (keys[2]) {
-			posX -= dirX * moveSpeed;
-			posY -= dirY * moveSpeed;
+			Player.posX -= Player.dirX * mov;
+			Player.posY -= Player.dirY * mov;
 		}
 		if (keys[3]) {
-			posX += planeX * moveSpeed;
-			posY += planeY * moveSpeed;
+			Player.posX += Player.planeX * mov;
+			Player.posY += Player.planeY * mov;
 		}
 
 		if (keys[4]) {
-			double oldDirX = dirX;
-			dirX = dirX * Math.cos(rotSpeed) - dirY * Math.sin(rotSpeed);
-			dirY = oldDirX * Math.sin(rotSpeed) + dirY * Math.cos(rotSpeed);
-			double oldPlaneX = planeX;
-			planeX = planeX * Math.cos(rotSpeed) - planeY * Math.sin(rotSpeed);
-			planeY = oldPlaneX * Math.sin(rotSpeed) + planeY * Math.cos(rotSpeed);
+			double olddirX = Player.dirX;
+			Player.dirX = Player.dirX * Math.cos(rot) - Player.dirY * Math.sin(rot);
+			Player.dirY = olddirX * Math.sin(rot) + Player.dirY * Math.cos(rot);
+			double oldplaneX = Player.planeX;
+			Player.planeX = Player.planeX * Math.cos(rot) - Player.planeY * Math.sin(rot);
+			Player.planeY = oldplaneX * Math.sin(rot) + Player.planeY * Math.cos(rot);
 		} else if (keys[5]) {
-			double oldDirX = dirX;
-			dirX = dirX * Math.cos(-rotSpeed) - dirY * Math.sin(-rotSpeed);
-			dirY = oldDirX * Math.sin(-rotSpeed) + dirY * Math.cos(-rotSpeed);
-			double oldPlaneX = planeX;
-			planeX = planeX * Math.cos(-rotSpeed) - planeY * Math.sin(-rotSpeed);
-			planeY = oldPlaneX * Math.sin(-rotSpeed) + planeY * Math.cos(-rotSpeed);
+			double olddirX = Player.dirX;
+			Player.dirX = Player.dirX * Math.cos(-rot) - Player.dirY * Math.sin(-rot);
+			Player.dirY = olddirX * Math.sin(-rot) + Player.dirY * Math.cos(-rot);
+			double oldplaneX = Player.planeX;
+			Player.planeX = Player.planeX * Math.cos(-rot) - Player.planeY * Math.sin(-rot);
+			Player.planeY = oldplaneX * Math.sin(-rot) + Player.planeY * Math.cos(-rot);
 		}
 
-		if (map[(int) posX][(int) posY] != 0) {
-			posX = oldX;
-			posY = oldY;
+		if (Engine.map[(int) Player.posX][(int) Player.posY] != 0) {
+			Player.posX = oldX;
+			Player.posY = oldY;
 		}
 	}
 
@@ -242,7 +230,9 @@ public class Main extends JPanel {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Floors");
-		Player p = new Player();
+		Player.init();
+		Textures.init();
+		Engine.setMap(Room.createRoom());
 		frame.setSize(1280, 720);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
