@@ -233,7 +233,7 @@ public class Main extends JPanel {
 		Player.init();
 		Textures.init();
 		Engine.setMap(Room.createRoom());
-		frame.setSize(1280, 720);
+		frame.setSize(800, 800);
 		frame.setLocation(0, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Main());
