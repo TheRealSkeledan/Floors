@@ -1,7 +1,6 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -24,7 +23,7 @@ public class Engine {
 
 	private static final int transparencyLimit = 2;
 	private static final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
+	private static final Future<?> futures[] = new Future<?>[800*2];
 	private static rect rects[] = new rect[transparencyLimit * 800];
 
 	public static int[][] map;
@@ -39,7 +38,6 @@ public class Engine {
 		drawFloor(image);
 		renderWalls();
 		for (int i = 0; i < transparencyLimit; i++) {
-			Future<?> futures[] = new Future<?>[800];
 			int n = 0;
 			for (int j = 0; j < 800; j++) {
 				rect r = rects[800 * i + j];
