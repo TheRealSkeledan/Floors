@@ -138,17 +138,17 @@ public class Main extends JPanel {
 			repaint();
 			long dif = System.nanoTime() - a;
 
-			int waitTime = 1000 / 60 - (int) (dif / 1000000);
+			// int waitTime = 1000 / 60 - (int) (dif / 1000000);
 
-			if (waitTime > 0) {
-				try {
-					Thread.sleep(waitTime);
-				} catch (InterruptedException ex) {
+			// if (waitTime > 0) {
+			// 	try {
+			// 		Thread.sleep(waitTime);
+			// 	} catch (InterruptedException ex) {
 
-				}
-			}
+			// 	}
+			// }
 
-			dif += waitTime * 1000000;
+			// dif += waitTime * 1000000;
 
 			double fps = 1000000000.0 / dif;
 			g.setColor(Color.red);
