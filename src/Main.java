@@ -203,6 +203,9 @@ public class Main extends JPanel {
 			Player.posX += Player.planeX * mov;
 			Player.posY += Player.planeY * mov;
 		}
+		if(keys[6]) {
+			Player.changeHealth(-10);
+		}
 
 		if (keys[4]) {
 			double olddirX = Player.dirX;
@@ -219,6 +222,8 @@ public class Main extends JPanel {
 			Player.planeX = Player.planeX * Math.cos(-rot) - Player.planeY * Math.sin(-rot);
 			Player.planeY = oldplaneX * Math.sin(-rot) + Player.planeY * Math.cos(-rot);
 		}
+
+		
 
 		if (Engine.map[(int) Player.posX][(int) Player.posY] != 0) {
 			Player.posX = oldX;
