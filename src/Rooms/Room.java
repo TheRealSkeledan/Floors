@@ -1,3 +1,4 @@
+package Rooms;
 
 public class Room {
 	private String name;

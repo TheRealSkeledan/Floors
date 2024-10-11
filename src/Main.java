@@ -1,3 +1,6 @@
+import Engine.Engine;
+import Engine.Textures;
+import Rooms.Room;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -102,7 +105,7 @@ public class Main extends JPanel {
 	}
 
 
-	private static boolean keys[] = new boolean[10];
+	private static final boolean keys[] = new boolean[10];
 
 	private final BufferedImage image;
 	private final Graphics g;

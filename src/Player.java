@@ -6,8 +6,8 @@ import javax.swing.ImageIcon;
 public class Player {
 	private static int hp = 100, dmg;
 	private static Death dead;
-	private static ArrayList<String> weapons = new ArrayList<>();
-	private static ArrayList<String> items = new ArrayList<>();
+	private static final ArrayList<String> weapons = new ArrayList<>();
+	private static final ArrayList<String> items = new ArrayList<>();
 	private static int curWeapon = 0, curItem = 0;
 	private static int dmgHealth = 100;
 
