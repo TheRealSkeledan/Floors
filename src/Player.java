@@ -21,6 +21,9 @@ public class Player {
 	public static void init() {
 		weapons.add("rightArm");
 		items.add("leftArm");
+		items.add("vialOfLight");
+		items.add("vialOfCuriosity");
+		items.add("vialOfMischief");
 	}
 
 	public static void shoot() {
