@@ -1,5 +1,6 @@
 import Engine.Engine;
 import Engine.Textures;
+import Player.Player;
 import Rooms.Room;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,6 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import Entities.RedSun;
 
 public class Main extends JPanel {
 
@@ -118,7 +121,7 @@ public class Main extends JPanel {
 		image = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
-		
+		Engine.entities.add(new RedSun("Mao", 12, 120, 5));
 
 		timer = new Timer(10, new TimerListener());
 		timer.start();

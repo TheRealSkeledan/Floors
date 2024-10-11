@@ -1,11 +1,14 @@
+package Player;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
+// import Death;
+
 public class Player {
 	private static int hp = 100, dmg;
-	private static Death dead;
+	// private static Death dead;
 	private static final ArrayList<String> weapons = new ArrayList<>();
 	private static final ArrayList<String> items = new ArrayList<>();
 	private static int curWeapon = 0, curItem = 0;
@@ -59,10 +62,10 @@ public class Player {
 		barColour = new ImageIcon("assets/images/textures/healthBar.png");
 		g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
 
-		if (getHealth() <= 0) {
-			dead = new Death();
-			dead.createAngel(g);
-		}
+		// if (getHealth() <= 0) {
+		// 	dead = new Death();
+		// 	dead.createAngel(g);
+		// }
 	}
 
 	public static void drawHands(Graphics g) {

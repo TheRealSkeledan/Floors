@@ -1,6 +1,5 @@
 package Engine;
 
-import Entities.ImageLoader;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

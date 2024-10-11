@@ -1,12 +1,13 @@
 package Entities;
 
 import Abstract.Entity;
+import Engine.Textures;
 
 public class RedSun extends Entity {
 
     public RedSun(String name, int hp, int dmg, double speed) {
         super(name, hp, dmg, speed);
-        image = Textures.
+        image = Textures.RedSun;
     }
 
     @Override
@@ -15,16 +16,6 @@ public class RedSun extends Entity {
 
     @Override
     public void move() {
-    };
-
-    @Override
-    public int getX() {
-        return x;
-    };
-
-    @Override
-    public int getY() {
-        return y;
     };
 
     @Override

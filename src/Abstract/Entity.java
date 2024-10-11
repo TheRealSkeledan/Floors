@@ -34,6 +34,10 @@ public abstract class Entity {
 		return y;
 	}
 
+	public BufferedImage getImage(){
+		return image;
+	}
+
 	public abstract void attackPatterns();
 
 	public abstract void sound();

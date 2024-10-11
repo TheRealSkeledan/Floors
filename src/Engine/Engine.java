@@ -1,17 +1,18 @@
 package Engine;
+
+import Abstract.Entity;
+import Player.Player;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import Player;
-import Abstract.Entity;
 
 public class Engine {
 
@@ -26,22 +27,35 @@ public class Engine {
 			texturecoords = t;
 			texture = c;
 		}
+	}
 
-		public rect(int s[], int t[], BufferedImage c, Double d) {
+	static class sprite {
+		public int screencoords[];
+		public int texturecoords[];
+		public BufferedImage texture;
+		public double distance;
+
+		public sprite(int s[], int t[], BufferedImage c, double d) {
 			screencoords = s;
 			texturecoords = t;
 			texture = c;
 			distance = d;
+		}
+
+		public double getDistance() {
+			return distance;
 		}
 	}
 
 	private static final int transparencyLimit = 2;
 	private static final ExecutorService executor = Executors
 			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-	private static final Future<?> futures[] = new Future<?>[800 * 2];
+	private static final Future<?> futures[] = new Future<?>[800 * transparencyLimit];
 	private static final rect rects[] = new rect[transparencyLimit * 800];
+	private static final boolean drawn[] = new boolean[transparencyLimit *800];
 
-	private static ArrayList<Entity> entities = new ArrayList<>();
+	public static ArrayList<Entity> entities = new ArrayList<>();
+	private static final ArrayList<sprite> sprites = new ArrayList<>();
 
 	public static int[][] map;
 	private static int mapLen = 0;
@@ -54,25 +68,23 @@ public class Engine {
 	public static void draw(Graphics g, BufferedImage image) {
 		drawFloor(image);
 		renderWalls();
-		for (int i = 0; i < transparencyLimit; i++) {
-			int n = 0;
-			for (int j = 0; j < 800; j++) {
-				rect r = rects[800 * i + j];
-				if (r == null)
-					continue;
-				Future<?> future = executor.submit(() -> g.drawImage(Textures.wall, r.screencoords[0],
-						r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1],
-						r.texturecoords[2], r.texturecoords[3], null));
-				futures[n] = future;
-				futures[n] = future;
-				n++;
-			}
-			for (Future<?> future : futures) {
-				try {
-					if (future != null)
-						future.get();
-				} catch (InterruptedException | ExecutionException f) {
-				}
+		renderEnemies();
+		Collections.sort(sprites, Comparator.comparingDouble(sprite::getDistance).reversed());
+		int s = 800 * transparencyLimit;
+		for (int j = 0; j < s; j++) {
+			rect r = rects[j];
+			if (r == null)
+				continue;
+			Future<?> future = executor.submit(() -> g.drawImage(Textures.wall, r.screencoords[0],
+					r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1],
+					r.texturecoords[2], r.texturecoords[3], null));
+			futures[j] = future;
+		}
+		for (Future<?> future : futures) {
+			try {
+				if (future != null)
+					future.get();
+			} catch (InterruptedException | ExecutionException f) {
 			}
 		}
 
@@ -190,31 +202,42 @@ public class Engine {
 		}
 	}
 
-	public static void renderEnemies(){
+	public static void renderEnemies() {
 		int sx;
 		double sd;
-		for (int i = 0; i < entities.size(); i++){
+		for (int i = 0; i < entities.size(); i++) {
 			double x = entities.get(i).getX();
 			double y = entities.get(i).getY();
-			double dist = Math.sqrt((x-Player.posX)*(x-Player.posX) + (y-Player.posY)*(y-Player.posY));
-			double angleC = Math.atan(Math.abs(Player.dirY)/Math.abs(Player.dirX));
-			if (Player.dirX < 0) angleC = Math.PI-angleC;
-			if (Player.dirY < 0) angleC *= -1;
-			if (angleC < 0) angleC+=2*Math.PI;
-			double angleE = Math.atan(Math.abs(Player.posY-y)/Math.abs(Player.posX-x));
-			if (x-Player.posX < 0) angleE = Math.PI-angleE;
-			if (y-Player.posY < 0) angleE *= -1;
-			if (angleE < 0) angleE+=2*Math.PI;
-			double angledif = angleE-angleC;
-			if (angledif > Math.PI) angledif-=Math.PI*2;
-			if (angledif < -Math.PI) angledif+=Math.PI*2;
-			if (Math.abs(angledif) < 0.78){
-				sd = dist*Math.abs(Math.cos(angledif));
-				sx = (int)((dist*Math.sin(-angledif)/sd)/0.65*400+400);
-				int spriteDim = (int)(350/sd);
-				int screenCoords[] = {sx-spriteDim/2, 400-spriteDim/2, sx+spriteDim/2, 400+spriteDim/2};
-				rect r = new rect(, null, null);
-				enemysprites.push_back(E);
+			double dist = Math.sqrt((x - Player.posX) * (x - Player.posX) + (y - Player.posY) * (y - Player.posY));
+			double angleC = Math.atan(Math.abs(Player.dirY) / Math.abs(Player.dirX));
+			if (Player.dirX < 0)
+				angleC = Math.PI - angleC;
+			if (Player.dirY < 0)
+				angleC *= -1;
+			if (angleC < 0)
+				angleC += 2 * Math.PI;
+			double angleE = Math.atan(Math.abs(Player.posY - y) / Math.abs(Player.posX - x));
+			if (x - Player.posX < 0)
+				angleE = Math.PI - angleE;
+			if (y - Player.posY < 0)
+				angleE *= -1;
+			if (angleE < 0)
+				angleE += 2 * Math.PI;
+			double angledif = angleE - angleC;
+			if (angledif > Math.PI)
+				angledif -= Math.PI * 2;
+			if (angledif < -Math.PI)
+				angledif += Math.PI * 2;
+			if (Math.abs(angledif) < 0.78) {
+				Entity e = entities.get(i);
+				sd = dist * Math.abs(Math.cos(angledif));
+				sx = (int) ((dist * Math.sin(-angledif) / sd) / 0.65 * 400 + 400);
+				int spriteDim = (int) (350 / sd);
+				int screenCoords[] = { sx - spriteDim / 2, 400 - spriteDim / 2, sx + spriteDim / 2,
+						400 + spriteDim / 2 };
+				int textureCoords[] = { 0, 0, 100, 100 };
+				sprite r = new sprite(screenCoords, textureCoords, e.getImage(), sd);
+				sprites.add(r);
 			}
 		}
 	}
