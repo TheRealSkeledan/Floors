@@ -9,9 +9,9 @@ public abstract class Entity {
 	protected double speed;
 	protected BufferedImage image;
 
-	public Entity(String name, int hp, int dmg, double speed) {
-		x = 0;
-		y = 0;
+	public Entity(String name, int hp, int dmg, double speed, double X, double Y) {
+		x = X;
+		y = Y;
 		this.name = name;
 		this.hp = hp;
 		this.dmg = dmg;

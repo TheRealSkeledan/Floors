@@ -122,6 +122,9 @@ public class Main extends JPanel {
 
 		Engine.entities.add(new RedSun("Mao", 12, 120, 5, 4.0, 4.0));
 
+		Engine.entities.add(new RedSun("Mao", 12, 120, 5, 9.0, 8.0));
+
+
 		timer = new Timer(10, new TimerListener());
 		timer.start();
 		addKeyListener(new Keyboard());

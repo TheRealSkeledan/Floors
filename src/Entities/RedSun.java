@@ -6,7 +6,7 @@ import Engine.Textures;
 public class RedSun extends Entity {
 
     public RedSun(String name, int hp, int dmg, double speed, double x, double y) {
-        super(name, hp, dmg, speed);
+        super(name, hp, dmg, speed, x, y);
         image = Textures.RedSun;
     }
 
