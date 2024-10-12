@@ -93,6 +93,7 @@ public class Player {
 			curWeapon = 0;
 		}
 	}
+
 	public static void switchItem(int num) {
 		curItem += num;
 		if (curItem < 0) {
