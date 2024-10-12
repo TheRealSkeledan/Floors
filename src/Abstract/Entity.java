@@ -4,7 +4,8 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 	protected String name;
-	protected int hp, dmg, x, y;
+	protected int hp, dmg;
+	protected double x, y;
 	protected double speed;
 	protected BufferedImage image;
 
@@ -26,11 +27,11 @@ public abstract class Entity {
 		y += 1;
 	}
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
