@@ -22,10 +22,11 @@ public class Engine {
 		public BufferedImage texture;
 		public double distance;
 
-		public rect(int s[], int t[], BufferedImage c) {
+		public rect(int s[], int t[], BufferedImage c, double d) {
 			screencoords = s;
 			texturecoords = t;
 			texture = c;
+			distance = d;
 		}
 	}
 
@@ -52,7 +53,7 @@ public class Engine {
 			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	private static final Future<?> futures[] = new Future<?>[800 * transparencyLimit];
 	private static final rect rects[] = new rect[transparencyLimit * 800];
-	private static final boolean drawn[] = new boolean[transparencyLimit *800];
+	private static final int drawn[] = new int[transparencyLimit * 800];
 
 	public static ArrayList<Entity> entities = new ArrayList<>();
 	private static final ArrayList<sprite> sprites = new ArrayList<>();
@@ -70,21 +71,82 @@ public class Engine {
 		renderWalls();
 		renderEnemies();
 		Collections.sort(sprites, Comparator.comparingDouble(sprite::getDistance).reversed());
-		int s = 800 * transparencyLimit;
-		for (int j = 0; j < s; j++) {
+		Arrays.setAll(drawn, i -> 0);
+		int size = 800 * transparencyLimit;
+		for (int j = 0; j < size; j++) {
 			rect r = rects[j];
 			if (r == null)
 				continue;
-			Future<?> future = executor.submit(() -> g.drawImage(Textures.wall, r.screencoords[0],
-					r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0], r.texturecoords[1],
-					r.texturecoords[2], r.texturecoords[3], null));
-			futures[j] = future;
+			if (true/* ||r.distance > s.distance */) {
+				Future<?> future = executor.submit(() -> {
+					return g.drawImage(Textures.wall, r.screencoords[0],
+							r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0],
+							r.texturecoords[1],
+							r.texturecoords[2], r.texturecoords[3], null);
+				});
+				futures[j] = future;
+				// drawn[j] = 1;
+			}
 		}
 		for (Future<?> future : futures) {
 			try {
 				if (future != null)
 					future.get();
 			} catch (InterruptedException | ExecutionException f) {
+			}
+		}
+
+		if (!sprites.isEmpty()) {
+			sprite s = sprites.get(0);
+			for (int j = 0; j < size; j++) {
+				rect r = rects[j];
+				if (r == null)
+					continue;
+				if (r.distance > s.distance) {
+					Future<?> future = executor.submit(() -> {
+						return g.drawImage(Textures.wall, r.screencoords[0],
+								r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0],
+								r.texturecoords[1],
+								r.texturecoords[2], r.texturecoords[3], null);
+					});
+					futures[j] = future;
+					// drawn[j] = 1;
+				}
+			}
+			for (Future<?> future : futures) {
+				try {
+					if (future != null)
+						future.get();
+				} catch (InterruptedException | ExecutionException f) {
+				}
+			}
+
+			g.drawImage(s.texture, s.screencoords[0],
+					s.screencoords[1], s.screencoords[2], s.screencoords[3], s.texturecoords[0],
+					s.texturecoords[1],
+					s.texturecoords[2], s.texturecoords[3], null);
+
+			for (int j = 0; j < size; j++) {
+				rect r = rects[j];
+				if (r == null)
+					continue;
+				if (r.distance < s.distance) {
+					Future<?> future = executor.submit(() -> {
+						return g.drawImage(Textures.wall, r.screencoords[0],
+								r.screencoords[1], r.screencoords[2], r.screencoords[3], r.texturecoords[0],
+								r.texturecoords[1],
+								r.texturecoords[2], r.texturecoords[3], null);
+					});
+					futures[j] = future;
+					// drawn[j] = 1;
+				}
+			}
+			for (Future<?> future : futures) {
+				try {
+					if (future != null)
+						future.get();
+				} catch (InterruptedException | ExecutionException f) {
+				}
 			}
 		}
 
@@ -156,7 +218,7 @@ public class Engine {
 						b = true;
 					}
 					rects[800 * (transparencyLimit - hits) + x] = new rect(screencoords, texturecoords,
-							Textures.wall);
+							Textures.wall, dist);
 					if (b)
 						break;
 				}
@@ -203,8 +265,9 @@ public class Engine {
 	}
 
 	public static void renderEnemies() {
-		int sx;
+		double sx;
 		double sd;
+		sprites.clear();
 		for (int i = 0; i < entities.size(); i++) {
 			double x = entities.get(i).getX();
 			double y = entities.get(i).getY();
@@ -233,8 +296,8 @@ public class Engine {
 				sd = dist * Math.abs(Math.cos(angledif));
 				sx = (int) ((dist * Math.sin(-angledif) / sd) / 0.65 * 400 + 400);
 				int spriteDim = (int) (350 / sd);
-				int screenCoords[] = { sx - spriteDim / 2, 400 - spriteDim / 2, sx + spriteDim / 2,
-						400 + spriteDim / 2 };
+				int screenCoords[] = { (int) sx - spriteDim, 400 - spriteDim, (int) sx + spriteDim,
+						400 + spriteDim };
 				int textureCoords[] = { 0, 0, 100, 100 };
 				sprite r = new sprite(screenCoords, textureCoords, e.getImage(), sd);
 				sprites.add(r);
