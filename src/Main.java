@@ -179,6 +179,9 @@ public class Main extends JPanel {
 			Death.showHints(g);
 			hints++;
 		}
+
+		ImageIcon photo = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
+		g.drawImage(photo.getImage(), 0, 0, 800, 800, null);
 	}
 
 

@@ -77,6 +77,14 @@ public class Player {
 		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
 	}
 
+	public static String getItem() {
+		return items.get(curItem);
+	}
+
+	public static String getWeapon() {
+		return weapons.get(curWeapon);
+	}
+
 	public static void addWeapon(String weapon) {
 		weapons.add(weapon);
 	}
