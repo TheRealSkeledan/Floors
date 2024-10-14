@@ -43,7 +43,9 @@ public class Main extends JPanel {
 					keys[3] = true;
 				}
 				case 'h' -> {
-					keys[6] = true;
+					Player.changeHealth(-10);
+					// Death.showHints(g);
+					// hints++;
 				}
 				case 'q' -> {
 					Player.switchItem(-1);
@@ -78,9 +80,6 @@ public class Main extends JPanel {
 				}
 				case 'd' -> {
 					keys[3] = false;
-				}
-				case 'h' -> {
-					keys[6] = false;
 				}
 			}
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -175,13 +174,10 @@ public class Main extends JPanel {
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
 		}
 
-		if (keys[6]) {
-			Death.showHints(g);
-			hints++;
-		}
-
 		ImageIcon photo = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
-		g.drawImage(photo.getImage(), 0, 0, 800, 800, null);
+		g.drawImage(photo.getImage(), 0, 0, 780, 780, null);
+
+		Player.damage(g);
 	}
 
 
@@ -213,9 +209,6 @@ public class Main extends JPanel {
 		if (keys[3]) {
 			Player.posX += Player.planeX * mov;
 			Player.posY += Player.planeY * mov;
-		}
-		if(keys[6]) {
-			Player.changeHealth(-10);
 		}
 
 		if (keys[4]) {

@@ -77,6 +77,14 @@ public class Player {
 		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
 	}
 
+	public static void damage(Graphics g) {
+		ImageIcon hurt = new ImageIcon("assets/images/textures/overlay/damageOverlay.png");
+
+		if(Player.getHealth() <= 25) {
+			g.drawImage(hurt.getImage(), 0, 0, 780, 780, null);
+		}
+	}
+
 	public static String getItem() {
 		return items.get(curItem);
 	}
