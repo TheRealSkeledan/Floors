@@ -103,7 +103,7 @@ public class Engine {
 				} catch (InterruptedException | ExecutionException f) {
 				}
 			});
-			
+
 			g.drawImage(s.texture, s.screencoords[0],
 					s.screencoords[1], s.screencoords[2], s.screencoords[3], s.texturecoords[0],
 					s.texturecoords[1],
@@ -131,7 +131,9 @@ public class Engine {
 			} catch (InterruptedException | ExecutionException f) {
 			}
 		});
-	
+
+		drawFloor2(image);
+
 		Arrays.setAll(rects, i -> null);
 	}
 
@@ -176,7 +178,22 @@ public class Engine {
 				if ((mapX < 0 || mapX >= mapLenX) || (mapY < 0 || mapY >= mapLenY))
 					break;
 
-				if (wallHit(mapX, mapY, Player.posX, Player.posY, side)) {
+				int walltype;
+				if ((walltype = wallHit(mapX, mapY, Player.posX, Player.posY, side)) != 0) {
+					hits++;
+					boolean b = false;
+					if (hits >= transparencyLimit) {
+						hits = transparencyLimit;
+						b = true;
+					}
+
+					int height;
+					if (walltype == 2) {
+						height = 200;
+					} else {
+						height = 800;
+					}
+
 					if (side == 0) {
 						dist = (lenX - dx);
 						double texturedist = dist * raydirY + Player.posY;
@@ -187,14 +204,7 @@ public class Engine {
 						wallcoord = texturedist - (int) texturedist;
 					}
 
-					hits++;
-					boolean b = false;
-					if (hits >= transparencyLimit) {
-						hits = transparencyLimit;
-						b = true;
-					}
-
-					addWallStrip(dist, wallcoord, hits, x);
+					addWallStrip(dist, wallcoord, hits, x, height);
 
 					if (b)
 						break;
@@ -212,34 +222,37 @@ public class Engine {
 				}
 			}
 		}
+
 	}
 
-	public static void addWallStrip(double dist, double wallcoord, int hits, int x) {
-		int lineHeight = (int) (800 / (dist));
-		int screencoords[] = { (int) x, (int) (400 - lineHeight / 2), (int) x + 1,
-				(int) (400 + lineHeight / 2) };
-		int texturecoords[] = { (int) (wallcoord * 300), 0, (int) (wallcoord * 300) + 1, 299 };
+	public static void addWallStrip(double dist, double wallcoord, int hits, int x, int h) {
+		int lh = (int) (800 / dist);
+		int lineHeight = (int) (h / dist);
+		int screencoords[] = { (int) x, (int) (400 + lh / 2 - lineHeight), (int) x + 1,
+				(int) (400 + lh / 2) };
+		int texturecoords[] = { (int) (wallcoord * 100), 0, (int) (wallcoord * 100) + 1, 99 };
 		rects[800 * (transparencyLimit - hits) + x] = new rect(screencoords, texturecoords,
 				Textures.wall, dist);
 	}
 
-	public static boolean wallHit(int mapX, int mapY, double posX, double posY, int side) {
-
-		if (map[mapX][mapY] != 0)
-			return true;
+	public static int wallHit(int mapX, int mapY, double posX, double posY, int side) {
+		int type;
+		if ((type = map[mapX][mapY]) != 0)
+			return type;
 		if (side == 0) {
-			if (map[mapX - 1][mapY] != 0 && posX < mapX)
-				return true;
-			if (map[mapX + 1][mapY] != 0 && posX > mapX + 1) {
-				return true;
+			if ((type = map[mapX - 1][mapY]) != 0 && posX < mapX)
+				return type;
+			if ((type = map[mapX + 1][mapY]) != 0 && posX > mapX + 1) {
+				return type;
 			}
 		} else {
-			if (map[mapX][mapY + 1] != 0 && posY > mapY + 1)
-				return true;
-			else if (map[mapX][mapY - 1] != 0 && posY < mapY)
-				return true;
+			if ((type = map[mapX][mapY + 1]) != 0 && posY > mapY + 1)
+				return type;
+			else if ((type = map[mapX][mapY - 1]) != 0 && posY < mapY)
+				return type;
 		}
-		return false;
+		type = 0;
+		return type;
 	}
 
 	public static void drawFloor(BufferedImage image) {
@@ -258,10 +271,38 @@ public class Engine {
 				double perpDist = 400.0 / y;
 				double pixelx = (raydirX * perpDist + Player.posX);
 				double pixely = (raydirY * perpDist + Player.posY);
-				if ((pixelx >= 0 && pixelx <= mapLenX) && (pixely >= 0 && pixely <= mapLenY)) {
-					int imagex = (int) ((pixelx - (int) pixelx) * 300);
-					int imagey = (int) ((pixely - (int) pixely) * 300);
-					int pixelColor = textureData[300 * imagey + imagex];
+				if ((pixelx >= 0 && pixelx <= mapLenX) && (pixely >= 0 && pixely <= mapLenY)
+						&& map[(int) pixelx][(int) pixely] != 2) {
+					int imagex = (int) ((pixelx - (int) pixelx) * 100);
+					int imagey = (int) ((pixely - (int) pixely) * 100);
+					int pixelColor = textureData[100 * imagey + imagex];
+					imageData[800 * (y + 400) + x] = pixelColor;
+				}
+			}
+		}
+	}
+
+	public static void drawFloor2(BufferedImage image) {
+
+		DataBufferInt imageBuffer = (DataBufferInt) image.getRaster().getDataBuffer();
+		DataBufferInt textureBuffer = (DataBufferInt) Textures.RedSun.getRaster().getDataBuffer();
+
+		int imageData[] = imageBuffer.getData();
+		int textureData[] = textureBuffer.getData();
+
+		for (int x = 0; x < 800; x++) {
+			double c = x / 400.0 - 1;
+			double raydirX = Player.dirX + c * Player.planeX;
+			double raydirY = Player.dirY + c * Player.planeY;
+			for (int y = 0; y < 400; y++) {
+				double perpDist = 200.0 / y;
+				double pixelx = (raydirX * perpDist + Player.posX);
+				double pixely = (raydirY * perpDist + Player.posY);
+				if ((pixelx >= 0 && pixelx <= mapLenX) && (pixely >= 0 && pixely <= mapLenY)
+						&& map[(int) pixelx][(int) pixely] == 2) {
+					int imagex = (int) ((pixelx - (int) pixelx) * 100);
+					int imagey = (int) ((pixely - (int) pixely) * 100);
+					int pixelColor = textureData[100 * imagey + imagex];
 					imageData[800 * (y + 400) + x] = pixelColor;
 				}
 			}
