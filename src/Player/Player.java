@@ -77,6 +77,22 @@ public class Player {
 		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
 	}
 
+	public static void damage(Graphics g, int w, int h) {
+		ImageIcon hurt = new ImageIcon("assets/images/textures/overlay/damageOverlay.png");
+
+		if(Player.getHealth() <= 25) {
+			g.drawImage(hurt.getImage(), 0, 0, w, h, null);
+		}
+	}
+
+	public static String getItem() {
+		return items.get(curItem);
+	}
+
+	public static String getWeapon() {
+		return weapons.get(curWeapon);
+	}
+
 	public static void addWeapon(String weapon) {
 		weapons.add(weapon);
 	}

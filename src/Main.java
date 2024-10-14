@@ -43,7 +43,9 @@ public class Main extends JPanel {
 					keys[3] = true;
 				}
 				case 'h' -> {
-					keys[6] = true;
+					Player.changeHealth(-10);
+					// Death.showHints(g);
+					// hints++;
 				}
 				case 'q' -> {
 					Player.switchItem(-1);
@@ -78,9 +80,6 @@ public class Main extends JPanel {
 				}
 				case 'd' -> {
 					keys[3] = false;
-				}
-				case 'h' -> {
-					keys[6] = false;
 				}
 			}
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -163,22 +162,25 @@ public class Main extends JPanel {
 			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
 
 			Player.drawHands(g);
-			Player.drawHealthBar(g);
 		}
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+
+		ImageIcon photo = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
+		g.drawImage(photo.getImage(), 0, 0, getWidth(), getHeight(), null);
+
+		photo = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
+		g.drawImage(photo.getImage(), 0, 0, getWidth(), getHeight(), null);
+
+		Player.damage(g, getWidth(), getHeight());
 		if (hints < 1) {
 			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
 		}
-
-		if (keys[6]) {
-			Death.showHints(g);
-			hints++;
-		}
+		Player.drawHealthBar(g);
 	}
 
 
@@ -210,9 +212,6 @@ public class Main extends JPanel {
 		if (keys[3]) {
 			Player.posX += Player.planeX * mov;
 			Player.posY += Player.planeY * mov;
-		}
-		if(keys[6]) {
-			Player.changeHealth(-10);
 		}
 
 		if (keys[4]) {
