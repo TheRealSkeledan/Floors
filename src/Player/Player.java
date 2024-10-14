@@ -1,5 +1,7 @@
 package Player;
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
@@ -12,6 +14,7 @@ public class Player {
 	private static final ArrayList<String> items = new ArrayList<>();
 	private static int curWeapon = 0, curItem = 0;
 	private static int dmgHealth = 100, curHealth = 100;
+	private static float opacity = 0.5f;
 
 	public static double posX = 3, posY = 3;
 	public static double dirX = -1, dirY = 0;
@@ -36,17 +39,32 @@ public class Player {
 		return hp;
 	}
 
-	public static void changeHealth(int amount) {
+	public static void changeHealth(Graphics g, int amount, int w, int h) {
 		hp += amount;
 
 		if(hp > 200) {
 			hp = 200;
 		}
+
+		Graphics2D g2d = (Graphics2D) g;
+		ImageIcon hurt = new ImageIcon("assets/images/textures/overlay/damageOverlay.png");
+
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+
+		if(Player.getHealth() <= 25) {
+			g2d.drawImage(hurt.getImage(), 0, 0, w, h, null);
+		}
+
+		if(Player.getHealth() > 100) {
+			ImageIcon heal = new ImageIcon("assets/images/textures/overlay/healOverlay.png");
+			g2d.drawImage(heal.getImage(), 0, 0, w, h, null);
+		}
+
+		opacity--;
 	}
 
 	public static void drawHealthBar(Graphics g) {
-		ImageIcon barColour;
-		
+		ImageIcon barColour;		
 		int hpWidth = 300, hpHeight = 50, hpX = 10, hpY = 740;
 
 		if(getHealth() <= 100) {
@@ -96,14 +114,6 @@ public class Player {
 		leftHand = new ImageIcon("assets/images/items/" + items.get(curItem) + ".png");
 		g.drawImage(rightHand.getImage(), 400, 300, 400, 600, null);
 		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
-	}
-
-	public static void damage(Graphics g, int w, int h) {
-		ImageIcon hurt = new ImageIcon("assets/images/textures/overlay/damageOverlay.png");
-
-		if(Player.getHealth() <= 25) {
-			g.drawImage(hurt.getImage(), 0, 0, w, h, null);
-		}
 	}
 
 	public static String getItem() {

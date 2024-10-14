@@ -46,12 +46,12 @@ public class Main extends JPanel {
 					keys[3] = true;
 				}
 				case 'h' -> {
-					Player.changeHealth(-10);
+					// Player.changeHealth(-10);
 					// Death.showHints(g);
 					// hints++;
 				}
 				case 'g' -> {
-					Player.changeHealth(10);
+					// Player.changeHealth(10);
 				}
 				case 'q' -> {
 					Player.switchItem(-1);
@@ -185,7 +185,6 @@ public class Main extends JPanel {
 		overlay = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
 		g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
 
-		Player.damage(g, getWidth(), getHeight());
 		if (hints < 1) {
 			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
