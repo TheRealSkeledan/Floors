@@ -11,11 +11,13 @@ public class Textures {
     public static BufferedImage wall;
     public static BufferedImage door;
     public static BufferedImage RedSun;
+    public static BufferedImage pan;
     
     public static void init() throws IOException{
         wall = ImageIO.read(new File("assets/images/textures/window.png"));
 		door = ImageLoader.loadImageAsRGB("assets/images/textures/door.png");
 		floor = ImageLoader.loadImageAsRGB("assets/images/textures/floor.png");
         RedSun = ImageLoader.loadImageAsRGB("assets/images/entities/RedSunAngel.jpg");
+        pan = ImageLoader.loadImageAsRGB("assets/images/textures/pan.jpg");
     }
 }

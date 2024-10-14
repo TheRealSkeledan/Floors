@@ -1,5 +1,4 @@
 import Engine.Engine;
-import Engine.Music;
 import Engine.Textures;
 import Entities.RedSun;
 import Player.Player;
@@ -177,10 +176,10 @@ public class Main extends JPanel {
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-		if(Room.darkRoom()) {
-			overlay = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
-			g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
-		}
+		// if(Room.darkRoom()) {
+		// 	overlay = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
+		// 	g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
+		// }
 		
 		overlay = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
 		g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
@@ -267,7 +266,7 @@ public class Main extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Main());
 		frame.setVisible(true);
-		Music.play("assets/music/ambient/drywall.wav");
+		// Music.play("assets/music/ambient/drywall.wav");
 	}
 
 }
