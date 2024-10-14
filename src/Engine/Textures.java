@@ -13,7 +13,7 @@ public class Textures {
     public static BufferedImage RedSun;
     
     public static void init() throws IOException{
-        wall = ImageIO.read(new File("assets/images/textures/wall.png"));
+        wall = ImageIO.read(new File("assets/images/textures/window.png"));
 		door = ImageLoader.loadImageAsRGB("assets/images/textures/door.png");
 		floor = ImageLoader.loadImageAsRGB("assets/images/textures/floor.png");
         RedSun = ImageLoader.loadImageAsRGB("assets/images/entities/RedSunAngel.jpg");

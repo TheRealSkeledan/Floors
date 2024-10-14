@@ -48,7 +48,7 @@ public class Engine {
 		}
 	}
 
-	private static final int transparencyLimit = 2;
+	private static final int transparencyLimit = 3;
 	private static final ExecutorService executor = Executors
 			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	private static final Future<?> futures[] = new Future<?>[800 * transparencyLimit];
@@ -133,7 +133,6 @@ public class Engine {
 	}
 
 	public static void renderWalls() {
-
 		for (int x = 0; x < 800; x++) {
 			double c = x / 400.0 - 1;
 			double raydirX = Player.dirX + c * Player.planeX;
@@ -173,7 +172,8 @@ public class Engine {
 			for (int i = 0; i < 200; i++) {
 				if ((mapX < 0 || mapX >= mapLen) || (mapY < 0 || mapY >= mapLen))
 					break;
-				if (map[mapX][mapY] != 0) {
+
+				if (wallHit(mapX, mapY, Player.posX, Player.posY, side)) {
 					if (side == 0) {
 						dist = (lenX - dx);
 						double texturedist = dist * raydirY + Player.posY;
@@ -184,23 +184,20 @@ public class Engine {
 						wallcoord = texturedist - (int) texturedist;
 					}
 
-					int lineHeight = (int) (800 / (dist));
-
-					int screencoords[] = { (int) x, (int) (400 - lineHeight / 2), (int) x + 1,
-							(int) (400 + lineHeight / 2) };
-					int texturecoords[] = { (int) (wallcoord * 300), 0, (int) (wallcoord * 300) + 1, 299 };
-
 					hits++;
 					boolean b = false;
 					if (hits >= transparencyLimit) {
 						hits = transparencyLimit;
 						b = true;
 					}
-					rects[800 * (transparencyLimit - hits) + x] = new rect(screencoords, texturecoords,
-							Textures.wall, dist);
+
+					addWallStrip(dist, wallcoord, hits, x);
+
 					if (b)
 						break;
+
 				}
+
 				if (lenY < lenX) {
 					mapY += stepY;
 					lenY += dy;
@@ -212,6 +209,35 @@ public class Engine {
 				}
 			}
 		}
+	}
+
+	public static void addWallStrip(double dist, double wallcoord, int hits, int x) {
+		int lineHeight = (int) (800 / (dist));
+		int screencoords[] = { (int) x, (int) (400 - lineHeight / 2), (int) x + 1,
+				(int) (400 + lineHeight / 2) };
+		int texturecoords[] = { (int) (wallcoord * 300), 0, (int) (wallcoord * 300) + 1, 299 };
+		rects[800 * (transparencyLimit - hits) + x] = new rect(screencoords, texturecoords,
+				Textures.wall, dist);
+	}
+
+	public static boolean wallHit(int mapX, int mapY, double posX, double posY, int side) {
+
+		if (map[mapX][mapY] != 0)
+			return true;
+		if (side == 0) {
+			if (map[mapX - 1][mapY] != 0 && posX < mapX)
+				return true;
+			if (map[mapX + 1][mapY] != 0 && posX > mapX + 1) {
+				// System.out.println(posX-mapX);
+				return true;
+			}
+		} else {
+			if (map[mapX][mapY + 1] != 0 && posY > mapY + 1)
+				return true;
+			else if (map[mapX][mapY - 1] != 0 && posY < mapY)
+				return true;
+		}
+		return false;
 	}
 
 	public static void drawFloor(BufferedImage image) {
