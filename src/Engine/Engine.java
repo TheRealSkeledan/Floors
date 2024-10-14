@@ -60,15 +60,17 @@ public class Engine {
 	private static final ArrayList<sprite> sprites = new ArrayList<>();
 
 	public static int[][] map;
-	private static int mapLen = 0;
+	private static int mapLenX = 0;
+	private static int mapLenY = 0;
 
 	public static void setMap(int m[][]) {
 		map = m;
-		mapLen = map.length;
+		mapLenX = map.length;
+		mapLenY = map[0].length;
 	}
 
 	public static void draw(Graphics g, BufferedImage image) {
-		// drawFloor(image);
+		drawFloor(image);
 		renderWalls();
 		renderEnemies();
 		Collections.sort(sprites, Comparator.comparingDouble(sprite::getDistance).reversed());
@@ -171,7 +173,7 @@ public class Engine {
 
 			int hits = 0;
 			for (int i = 0; i < 200; i++) {
-				if ((mapX < 0 || mapX >= mapLen) || (mapY < 0 || mapY >= mapLen))
+				if ((mapX < 0 || mapX >= mapLenX) || (mapY < 0 || mapY >= mapLenY))
 					break;
 
 				if (wallHit(mapX, mapY, Player.posX, Player.posY, side)) {
@@ -256,7 +258,7 @@ public class Engine {
 				double perpDist = 400.0 / y;
 				double pixelx = (raydirX * perpDist + Player.posX);
 				double pixely = (raydirY * perpDist + Player.posY);
-				if ((pixelx >= 0 && pixelx <= mapLen) && (pixely >= 0 && pixely <= mapLen)) {
+				if ((pixelx >= 0 && pixelx <= mapLenX) && (pixely >= 0 && pixely <= mapLenY)) {
 					int imagex = (int) ((pixelx - (int) pixelx) * 300);
 					int imagey = (int) ((pixely - (int) pixely) * 300);
 					int pixelColor = textureData[300 * imagey + imagex];

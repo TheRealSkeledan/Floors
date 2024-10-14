@@ -1,4 +1,5 @@
 import Engine.Engine;
+import Engine.Music;
 import Engine.Textures;
 import Entities.RedSun;
 import Player.Player;
@@ -13,6 +14,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -253,7 +256,7 @@ public class Main extends JPanel {
 	}
 
 	// main method with standard graphics code
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
 		System.setProperty("sun.java2d.opengl", "true");
 		JFrame frame = new JFrame("Floors");
 		Player.init();
@@ -264,6 +267,7 @@ public class Main extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Main());
 		frame.setVisible(true);
+		Music.play("assets/music/ambient/drywall.wav");
 	}
 
 }
