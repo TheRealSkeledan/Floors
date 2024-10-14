@@ -162,22 +162,25 @@ public class Main extends JPanel {
 			g.drawString("FPS: " + Integer.toString((int) fps), 10, 10);
 
 			Player.drawHands(g);
-			Player.drawHealthBar(g);
 		}
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+
+		ImageIcon photo = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
+		g.drawImage(photo.getImage(), 0, 0, getWidth(), getHeight(), null);
+
+		photo = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
+		g.drawImage(photo.getImage(), 0, 0, getWidth(), getHeight(), null);
+
+		Player.damage(g, getWidth(), getHeight());
 		if (hints < 1) {
 			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
 		}
-
-		ImageIcon photo = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
-		g.drawImage(photo.getImage(), 0, 0, 780, 780, null);
-
-		Player.damage(g);
+		Player.drawHealthBar(g);
 	}
 
 
