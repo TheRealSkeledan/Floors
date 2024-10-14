@@ -1,4 +1,5 @@
 import Engine.Engine;
+import Engine.Music;
 import Engine.Textures;
 import Entities.RedSun;
 import Player.Player;
@@ -266,7 +267,7 @@ public class Main extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Main());
 		frame.setVisible(true);
-		// Music.play("assets/music/ambient/drywall.wav");
+		Music.play("assets/music/ambient/drywall.wav");
 	}
 
 }

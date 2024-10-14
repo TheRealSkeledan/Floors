@@ -71,6 +71,7 @@ public class Engine {
 
 	public static void draw(Graphics g, BufferedImage image) {
 		drawFloor(image);
+		drawFloor2(image);
 		renderWalls();
 		renderEnemies();
 		Collections.sort(sprites, Comparator.comparingDouble(sprite::getDistance).reversed());
@@ -132,7 +133,6 @@ public class Engine {
 			}
 		});
 
-		drawFloor2(image);
 
 		Arrays.setAll(rects, i -> null);
 	}
