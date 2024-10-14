@@ -11,7 +11,7 @@ public class Player {
 	private static final ArrayList<String> weapons = new ArrayList<>();
 	private static final ArrayList<String> items = new ArrayList<>();
 	private static int curWeapon = 0, curItem = 0;
-	private static int dmgHealth = 100;
+	private static int dmgHealth = 100, curHealth = 100;
 
 	public static double posX = 3, posY = 3;
 	public static double dirX = -1, dirY = 0;
@@ -55,13 +55,18 @@ public class Player {
 			if(getHealth() > dmgHealth)
 				dmgHealth++;
 		}
+
+		if(curHealth < getHealth())
+			curHealth++;
+		if(curHealth > getHealth())
+			curHealth -= 2;
 		
 		barColour = new ImageIcon("assets/images/textures/ui/dmgBar.png");
 		g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (dmgHealth * (hpWidth / 100)) - 30, hpHeight - 30, null);
 
 		barColour = new ImageIcon("assets/images/textures/ui/fullBar.png");
 		if(getHealth() <= 100) {
-			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (getHealth() * (hpWidth / 100)) - 30, hpHeight - 30, null);
+			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (curHealth * (hpWidth / 100)) - 30, hpHeight - 30, null);
 		}
 		else {
 			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (100 * (hpWidth / 100)) - 30, hpHeight - 30, null);
@@ -75,7 +80,7 @@ public class Player {
 			g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
 
 			barColour = new ImageIcon("assets/images/textures/ui/overBar.png");
-			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) ((getHealth() - 100) * (hpWidth / 100)) - 30, hpHeight - 30, null);
+			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) ((curHealth - 100) * (hpWidth / 100)) - 30, hpHeight - 30, null);
 		}
 
 		// if (getHealth() <= 0) {
