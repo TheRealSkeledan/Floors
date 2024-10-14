@@ -4,7 +4,7 @@ public class Room {
 	private String name;
 	private int floorNum;
 	private int maxFurniture, maxClosets;
-	private boolean isBossRoom;
+	private static boolean isBossRoom, isDarkRoom = false;
 
 	public Room() {
 		floorNum = 0000;
@@ -144,10 +144,18 @@ public class Room {
 				}
 		};
 
+		if((int)(Math.random() * 5) == 2) {
+			isDarkRoom = true;
+		}
+
 		// int[][] room = maps[(int)(Math.random() * maps.length)];
 		int[][] room = maps[1];
 
 		return room;
+	}
+
+	public static boolean darkRoom() {
+		return isDarkRoom;
 	}
 
 	public void floorUp() {

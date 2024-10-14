@@ -1,5 +1,4 @@
 package Player;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -39,28 +38,45 @@ public class Player {
 
 	public static void changeHealth(int amount) {
 		hp += amount;
+
+		if(hp > 200) {
+			hp = 200;
+		}
 	}
 
 	public static void drawHealthBar(Graphics g) {
 		ImageIcon barColour;
 		
-
 		int hpWidth = 300, hpHeight = 50, hpX = 10, hpY = 740;
 
-		if(dmgHealth != getHealth())
-			dmgHealth--;
+		if(getHealth() <= 100) {
+			if(dmgHealth > getHealth())
+				dmgHealth--;
+			if(getHealth() > dmgHealth)
+				dmgHealth++;
+		}
 		
-		barColour = new ImageIcon("assets/images/textures/redBar.png");
-		g.setColor(Color.red);
+		barColour = new ImageIcon("assets/images/textures/ui/dmgBar.png");
 		g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (dmgHealth * (hpWidth / 100)) - 30, hpHeight - 30, null);
 
-		barColour = new ImageIcon("assets/images/textures/greenBar.png");
-		g.setColor(Color.green);
-		g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (getHealth() * (hpWidth / 100)) - 30, hpHeight - 30, null);
-		
+		barColour = new ImageIcon("assets/images/textures/ui/fullBar.png");
+		if(getHealth() <= 100) {
+			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (getHealth() * (hpWidth / 100)) - 30, hpHeight - 30, null);
+		}
+		else {
+			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) (100 * (hpWidth / 100)) - 30, hpHeight - 30, null);
+		}
 
-		barColour = new ImageIcon("assets/images/textures/healthBar.png");
+		barColour = new ImageIcon("assets/images/textures/ui/healthBar.png");
 		g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
+
+		if(getHealth() > 100) {
+			barColour = new ImageIcon("assets/images/textures/ui/overHealthbar.png");
+			g.drawImage(barColour.getImage(), hpX, hpY, (int) ((getHealth() - 100) * (hpWidth / 100)), hpHeight, null);
+
+			barColour = new ImageIcon("assets/images/textures/ui/overBar.png");
+			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) ((getHealth() - 100) * (hpWidth / 100)) - 30, hpHeight - 30, null);
+		}
 
 		// if (getHealth() <= 0) {
 		// 	dead = new Death();

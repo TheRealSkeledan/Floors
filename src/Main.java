@@ -47,6 +47,9 @@ public class Main extends JPanel {
 					// Death.showHints(g);
 					// hints++;
 				}
+				case 'g' -> {
+					Player.changeHealth(10);
+				}
 				case 'q' -> {
 					Player.switchItem(-1);
 				}
@@ -167,20 +170,31 @@ public class Main extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
+		ImageIcon overlay;
+
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-		ImageIcon photo = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
-		g.drawImage(photo.getImage(), 0, 0, getWidth(), getHeight(), null);
-
-		photo = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
-		g.drawImage(photo.getImage(), 0, 0, getWidth(), getHeight(), null);
+		if(Room.darkRoom()) {
+			overlay = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
+			g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
+		}
+		
+		overlay = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
+		g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
 
 		Player.damage(g, getWidth(), getHeight());
 		if (hints < 1) {
 			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
 		}
-		Player.drawHealthBar(g);
+
+		if(Player.getHealth() != 100)
+			Player.drawHealthBar(g);
+
+		if(Player.getHealth() <= 0) {
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
 	}
 
 
