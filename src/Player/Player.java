@@ -72,7 +72,7 @@ public class Player {
 
 		if(getHealth() > 100) {
 			barColour = new ImageIcon("assets/images/textures/ui/overHealthbar.png");
-			g.drawImage(barColour.getImage(), hpX, hpY, (int) ((getHealth() - 100) * (hpWidth / 100)), hpHeight, null);
+			g.drawImage(barColour.getImage(), hpX, hpY, hpWidth, hpHeight, null);
 
 			barColour = new ImageIcon("assets/images/textures/ui/overBar.png");
 			g.drawImage(barColour.getImage(), hpX + 15, hpY + 15, (int) ((getHealth() - 100) * (hpWidth / 100)) - 30, hpHeight - 30, null);
