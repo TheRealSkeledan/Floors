@@ -48,7 +48,7 @@ public class Engine {
 		}
 	}
 
-	private static final int transparencyLimit = 3;
+	private static final int transparencyLimit = 5;
 	private static final ExecutorService executor = Executors
 			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	private static final Future<?> futures[] = new Future<?>[800 * transparencyLimit];
@@ -68,7 +68,7 @@ public class Engine {
 	}
 
 	public static void draw(Graphics g, BufferedImage image) {
-		drawFloor(image);
+		// drawFloor(image);
 		renderWalls();
 		renderEnemies();
 		Collections.sort(sprites, Comparator.comparingDouble(sprite::getDistance).reversed());
@@ -93,20 +93,21 @@ public class Engine {
 					drawn[j] = 1;
 				}
 			}
-			for (Future<?> future : futures) {
+
+			Arrays.stream(futures).parallel().forEach(future -> {
 				try {
 					if (future != null)
 						future.get();
 				} catch (InterruptedException | ExecutionException f) {
 				}
-			}
-
+			});
+			
 			g.drawImage(s.texture, s.screencoords[0],
 					s.screencoords[1], s.screencoords[2], s.screencoords[3], s.texturecoords[0],
 					s.texturecoords[1],
 					s.texturecoords[2], s.texturecoords[3], null);
-
 		}
+
 		for (int j = 0; j < size; j++) {
 			rect r = rects[j];
 			if (r == null || drawn[j] == 1)
@@ -121,14 +122,14 @@ public class Engine {
 				futures[j] = future;
 			}
 		}
-		for (Future<?> future : futures) {
+		Arrays.stream(futures).parallel().forEach(future -> {
 			try {
 				if (future != null)
 					future.get();
 			} catch (InterruptedException | ExecutionException f) {
 			}
-		}
-
+		});
+	
 		Arrays.setAll(rects, i -> null);
 	}
 
@@ -228,7 +229,6 @@ public class Engine {
 			if (map[mapX - 1][mapY] != 0 && posX < mapX)
 				return true;
 			if (map[mapX + 1][mapY] != 0 && posX > mapX + 1) {
-				// System.out.println(posX-mapX);
 				return true;
 			}
 		} else {
@@ -253,13 +253,10 @@ public class Engine {
 			double raydirX = Player.dirX + c * Player.planeX;
 			double raydirY = Player.dirY + c * Player.planeY;
 			for (int y = 0; y < 400; y++) {
-
 				double perpDist = 400.0 / y;
 				double pixelx = (raydirX * perpDist + Player.posX);
 				double pixely = (raydirY * perpDist + Player.posY);
 				if ((pixelx >= 0 && pixelx <= mapLen) && (pixely >= 0 && pixely <= mapLen)) {
-					if (map[(int) pixelx][(int) pixely] != 0)
-						continue;
 					int imagex = (int) ((pixelx - (int) pixelx) * 300);
 					int imagey = (int) ((pixely - (int) pixely) * 300);
 					int pixelColor = textureData[300 * imagey + imagex];
