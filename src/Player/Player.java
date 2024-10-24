@@ -1,5 +1,7 @@
 package Player;
 import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ public class Player {
 	private static int curWeapon = 0, curItem = 0;
 	private static int dmgHealth = 100, curHealth = 100;
 	private static float opacity = 0.5f;
+
+	private static int coins = 0, finCoins = 0, floorNum = 100;
 
 	public static double posX = 3, posY = 3;
 	public static double dirX = -1, dirY = 0;
@@ -37,6 +41,56 @@ public class Player {
 
 	public static int getHealth() {
 		return hp;
+	}
+
+	public static void addCoins(int amtCoin) {
+		finCoins = coins + amtCoin;
+	}
+
+	public static void floorUp() {
+		floorNum++;
+	}
+
+	public static void drawUI(Graphics g) {
+		String back;
+		if(floorNum < 10) {
+			back = "000";
+		}
+		else if(floorNum < 100) {
+			back = "00";
+		}
+		else if(floorNum < 1000) {
+			back = "0";
+		} 
+		else if(floorNum < 10000) {
+			back = "";
+		} else {
+			back = "Doesn't Matter";
+		}
+
+		g.setFont(new Font("Helvetica", Font.BOLD, 30));
+		g.setColor(Color.WHITE);
+
+		if(coins < finCoins) {
+			coins += 2;
+		}
+		if(coins > 9999) {
+			coins = 9999;
+		}
+
+		ImageIcon coin = new ImageIcon("assets/images/textures/ui/coins.png");
+		g.drawImage(coin.getImage(), 0, 100, 100, 100, null);
+		g.drawString(coins + "", 120, 175);
+
+		ImageIcon boss = new ImageIcon("assets/images/textures/ui/bossIcon.png");
+		if(floorNum == 30 || floorNum == 50 || floorNum == 80 || floorNum == 100) {
+			g.drawImage(boss.getImage(), 0, 350, 100, 100, null);
+			g.setColor(Color.RED);
+		}
+		
+		ImageIcon floorIcon = new ImageIcon("assets/images/textures/ui/floorNum.png");
+		g.drawImage(floorIcon.getImage(), 0, 220, 100, 100, null);
+		g.drawString(back + floorNum, 120, 293);
 	}
 
 	public static void changeHealth(Graphics g, int amount, int w, int h) {
@@ -116,29 +170,13 @@ public class Player {
 		g.drawImage(leftHand.getImage(), 0, 300, 400, 600, null);
 	}
 
+	// Items stuff
 	public static String getItem() {
 		return items.get(curItem);
 	}
 
-	public static String getWeapon() {
-		return weapons.get(curWeapon);
-	}
-
-	public static void addWeapon(String weapon) {
-		weapons.add(weapon);
-	}
-
 	public static void addItem(String item) {
 		items.add(item);
-	}
-
-	public static void switchWeapons(int num) {
-		curWeapon += num;
-		if (curWeapon < 0) {
-			curWeapon = weapons.size() - 1;
-		} else if (curWeapon == weapons.size()) {
-			curWeapon = 0;
-		}
 	}
 
 	public static void switchItem(int num) {
@@ -147,6 +185,24 @@ public class Player {
 			curItem = items.size() - 1;
 		} else if (curItem == items.size()) {
 			curItem = 0;
+		}
+	}
+
+	// Weapons stuff
+	public static String getWeapon() {
+		return weapons.get(curWeapon);
+	}
+
+	public static void addWeapon(String weapon) {
+		weapons.add(weapon);
+	}
+
+	public static void switchWeapons(int num) {
+		curWeapon += num;
+		if (curWeapon < 0) {
+			curWeapon = weapons.size() - 1;
+		} else if (curWeapon == weapons.size()) {
+			curWeapon = 0;
 		}
 	}
 

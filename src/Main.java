@@ -52,6 +52,7 @@ public class Main extends JPanel {
 				}
 				case 'g' -> {
 					// Player.changeHealth(10);
+					Player.addCoins(10);
 				}
 				case 'q' -> {
 					Player.switchItem(-1);
@@ -177,10 +178,10 @@ public class Main extends JPanel {
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-		// if(Room.darkRoom()) {
-		// 	overlay = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
-		// 	g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
-		// }
+		if(Room.darkRoom()) {
+			overlay = new ImageIcon("assets/images/textures/overlay/darknessOverlay.png");
+			g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
+		}
 		
 		overlay = new ImageIcon("assets/images/textures/overlay/" + Player.getItem() + "Overlay.png");
 		g.drawImage(overlay.getImage(), 0, 0, getWidth(), getHeight(), null);
@@ -189,6 +190,8 @@ public class Main extends JPanel {
 			ImageIcon hint = new ImageIcon("assets/images/hints/hint.png");
 			g.drawImage(hint.getImage(), 0, 520, 100, 100, null);
 		}
+
+		Player.drawUI(g);
 
 		if(Player.getHealth() != 100)
 			Player.drawHealthBar(g);
@@ -266,7 +269,9 @@ public class Main extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Main());
 		frame.setVisible(true);
-		Music.play("assets/music/ambient/drywall.wav");
+
+		Music amb = new Music("assets/music/ambient/drywall");
+		amb.play();
 	}
 
 }

@@ -25,6 +25,10 @@ public class Death {
 			angel = 3;
 	}
 
+	public void deathScreen(Graphics g) {
+		
+	}
+
 	public void createAngel(Graphics g) {
 		if (angel == 0) {
 			g.setColor(new Color(64, 224, 208));
